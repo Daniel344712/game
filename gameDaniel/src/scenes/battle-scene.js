@@ -27,7 +27,7 @@ export class BattleScene extends Phaser.Scene {
     // create main background
     this.add.image(0, 0, BATTLE_BACKGROUND_ASSET_KEYS.FOREST).setOrigin(0);
 
-    // render out the player and enemy monsters
+    // render out the player and enemy monsters PATRON FACTORY
     this.children.add(CharacterFactory.createSkeleton(this));
     this.children.add(CharacterFactory.createPlayer(this));
 
@@ -106,6 +106,15 @@ export class BattleScene extends Phaser.Scene {
     console.log(this.#cursorKeys.space.isDown);
     if (wasSpaceKeyPressed) {
       this.#battleMenu.handlePlayerInput('OK');
+      //check if the player selected an attack, and update display text
+      if(this.#battleMenu.selectedAttack === undefined){
+        return;
+      }
+      console.log(`Player selected the following move: ${this.#battleMenu.selectedAttack}`)
+      this.#battleMenu.hideMonsterAttackSubMenu();
+      this.#battleMenu.updateInfoPaneMessagesAndWaitForInput(['You attacked the monster'], () =>{
+        this.#battleMenu.showMainBattleMenu();
+      })
       return;
     }
     if (Phaser.Input.Keyboard.JustDown(this.#cursorKeys.shift)) {
