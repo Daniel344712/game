@@ -22,10 +22,10 @@ export const BATTLE_MENU_OPTIONS = Object.freeze({
   });
 
    /**
-   * @typedef {keyof typeof ATTACK_MOVE_OPTIONS} ActiveBattleMenu
+   * @typedef {keyof typeof ACTIVE_BATTLE_MENU} ActiveBattleMenu
    */
   
-  /**@enum {AttackMoveOptions} */
+  /**@enum {ActiveBattleMenu} */
   export const ACTIVE_BATTLE_MENU = Object.freeze({
     BATTLE_MAIN: 'BATTLE_MAIN',
     BATTLE_MOVE_SELECT: 'BATTLE_MOVE_SELECT',

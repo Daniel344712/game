@@ -1,6 +1,5 @@
 import {
   BATTLE_ASSET_KEYS,
-  BATTLE_BACKGROUND_ASSET_KEYS,
   HEALTH_BAR_ASSET_KEYS,
   MONSTER_ASSET_KEYS,
 } from '../assets/asset-keys.js';
@@ -9,6 +8,10 @@ import Phaser from '../lib/phaser.js';
 import { SCENE_KEYS } from './scene-keys.js';
 import { CharacterFactory } from './characterFactory.js';
 import { DIRECTION } from '../common/direction.js';
+import { BackGround } from '../battle/background.js';
+import { HealthBar } from '../battle/ui/health-bar.js';
+import { EnemyBattleMonster } from '../battle/characters/enemy-battle-monster.js';
+
 
 
 export class BattleScene extends Phaser.Scene {
@@ -16,6 +19,8 @@ export class BattleScene extends Phaser.Scene {
   #battleMenu
   /**@type {Phaser.Types.Input.Keyboard.CursorKeys} */
   #cursorKeys;
+  /**@type {EnemyBattleMonster} */
+  #activeEnemyMonster
   constructor() {
     super({
       key: SCENE_KEYS.BATTLE_SCENE,
@@ -25,14 +30,32 @@ export class BattleScene extends Phaser.Scene {
   create() {
     console.log(`[${BattleScene.name}:create] invoked`);
     // create main background
-    this.add.image(0, 0, BATTLE_BACKGROUND_ASSET_KEYS.FOREST).setOrigin(0);
+    const background = new BackGround(this)
+    background.showForest()
+  
+
+    
 
     // render out the player and enemy monsters PATRON FACTORY
-    this.children.add(CharacterFactory.createSkeleton(this));
+    this.#activeEnemyMonster = new EnemyBattleMonster({
+      scene: this,
+      monsterDetails:{
+        name: MONSTER_ASSET_KEYS.SKELETON,
+        assetKey: MONSTER_ASSET_KEYS.SKELETON,
+        assetFrame: 0,
+        currentHp: 25,
+        maxHp: 25,
+        attackIds: [],
+        baseAttack: 5
+      }
+    })
+//    this.children.add(CharacterFactory.createSkeleton(this));
     this.children.add(CharacterFactory.createPlayer(this));
 
 
     // render out the player health bar
+    const playerHealthBar = new HealthBar(this, 34,35);
+ 
     const playerMonsterName = this.add.text(
       30,
       20,
@@ -42,12 +65,16 @@ export class BattleScene extends Phaser.Scene {
         fontSize: '32px',
       }
     );
+   
+
+  
     this.add.container(556, 318, [
       this.add
         .image(0, 0, BATTLE_ASSET_KEYS.HEALTH_BAR_BACKGROUND)
         .setOrigin(0),
       playerMonsterName,
-      this.#createHealthBar(34, 34),
+      playerHealthBar.container,
+      
       this.add.text(playerMonsterName.width + 35, 23, 'L5', {
         color: '#ED474B',
         fontSize: '28px',
@@ -66,22 +93,17 @@ export class BattleScene extends Phaser.Scene {
     ]);
 
     // render out the enemy health bar
-    const enemyMonsterName = this.add.text(
-      30,
-      20,
-      MONSTER_ASSET_KEYS.SKELETON,
-      {
-        color: '#7E3D3F',
-        fontSize: '32px',
-      }
-    );
+  
+   //const enemyHealthBar = new HealthBar(this, 34, 34);
+  const enemyHealthBar = this.#activeEnemyMonster._healthBar
+    const enemyMonsterName = this.add.text(30, 20, MONSTER_ASSET_KEYS.SKELETON, {
+      color: '#7E3D3F',
+      fontSize: '32px',
+    });
     this.add.container(0, 0, [
-      this.add
-        .image(0, 0, BATTLE_ASSET_KEYS.HEALTH_BAR_BACKGROUND)
-        .setOrigin(0)
-        .setScale(1, 0.8),
+      this.add.image(0, 0, BATTLE_ASSET_KEYS.HEALTH_BAR_BACKGROUND).setOrigin(0).setScale(1, 0.8),
       enemyMonsterName,
-      this.#createHealthBar(34, 34),
+      enemyHealthBar.container,
       this.add.text(enemyMonsterName.width + 35, 23, 'L5', {
         color: '#ED474B',
         fontSize: '28px',
@@ -98,11 +120,18 @@ export class BattleScene extends Phaser.Scene {
     this.#battleMenu = new BattleMenu(this)
     this.#battleMenu.showMainBattleMenu();
     this.#cursorKeys = this.input.keyboard.createCursorKeys();
-
-
+    playerHealthBar.setMeterPercentageAnimated(0.5,{
+      duration: 3000,
+      callback: () => {
+        console.log('animation completed')
+      },
+    })
+    this.#activeEnemyMonster.takeDamage(24);
+    console.log(this.#activeEnemyMonster.isFainted)
   }
   update() {
     const wasSpaceKeyPressed = Phaser.Input.Keyboard.JustDown(this.#cursorKeys.space)
+    //console.log("Error 1: was space key pressed: " + wasSpaceKeyPressed);
     console.log(this.#cursorKeys.space.isDown);
     if (wasSpaceKeyPressed) {
       this.#battleMenu.handlePlayerInput('OK');
@@ -112,10 +141,9 @@ export class BattleScene extends Phaser.Scene {
       }
       console.log(`Player selected the following move: ${this.#battleMenu.selectedAttack}`)
       this.#battleMenu.hideMonsterAttackSubMenu();
-      this.#battleMenu.updateInfoPaneMessagesAndWaitForInput(['You attacked the monster'], () =>{
+      this.#battleMenu.updateInfoPaneMessagesAndWaitForInput(['You attacked the monster'], () => {
         this.#battleMenu.showMainBattleMenu();
       })
-      return;
     }
     if (Phaser.Input.Keyboard.JustDown(this.#cursorKeys.shift)) {
       this.#battleMenu.handlePlayerInput('CANCEL');
@@ -136,29 +164,7 @@ export class BattleScene extends Phaser.Scene {
       this.#battleMenu.handlePlayerInput(selectedDirection);
     }
   }
-  /** 
-   * @param {number} x the x position to place the health bar container |
-   *  @param{number} y the x position to place the health bar container |
-   * @returns {Phaser.GameObjects.Container}|
-  */
-  #createHealthBar(x, y) {
-    const scaleY = 0.7;
-    const leftCap = this.add
-      .image(x, y, HEALTH_BAR_ASSET_KEYS.LEFT_CAP)
-      .setOrigin(0, 0.5)
-      .setScale(1, scaleY);
-    const middle = this.add
-      .image(leftCap.x + leftCap.width, y, HEALTH_BAR_ASSET_KEYS.MIDDLE)
-      .setOrigin(0, 0.5)
-      .setScale(1, scaleY);
-    middle.displayWidth = 360;
-    const rightCap = this.add
-      .image(middle.x + middle.displayWidth, y, HEALTH_BAR_ASSET_KEYS.RIGHT_CAP)
-      .setOrigin(0, 0.5)
-      .setScale(1, scaleY);
 
-    return this.add.container(x, y, [leftCap, middle, rightCap]);
-  }
 
 
 }
