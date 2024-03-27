@@ -70,8 +70,10 @@ export class BattleScene extends Phaser.Scene {
           attackIds: [2],
           baseAttack: 5,
           currentLevel: 5,
+          
         }
       }
+      
     );
 
 
@@ -103,14 +105,15 @@ export class BattleScene extends Phaser.Scene {
       }
       console.log(`Player selected the following move: ${this.#battleMenu.selectedAttack}`)
 
-      console.log(`Player selected the following move: ${this.#battleMenu.selectedAttack}`)
       this.#battleMenu.hideMonsterAttackSubMenu();
       this.#handleBattleSequence()
     }
+
     if (Phaser.Input.Keyboard.JustDown(this.#cursorKeys.shift)) {
       this.#battleMenu.handlePlayerInput('CANCEL');
       return;
     }
+
     /**@type {import('../common/direction.js').Direction} */
     let selectedDirection = DIRECTION.NONE;
     if (this.#cursorKeys.left.isDown) {
@@ -138,14 +141,18 @@ export class BattleScene extends Phaser.Scene {
   }
   #playerAttack() {
     this.#battleMenu.updateInfoPaneMessagesAndWaitForInput([`${this.#activePlayerMonster.name} used ${this.#activePlayerMonster.attacks[this.#activePlayerAttackIndex].name}`], () => {
-      this.time.delayedCall(500, () => {
-        this.#activeEnemyMonster.takeDamage(20, () => {
-          this.#enemyAttack();
-        })
-      })
-    })
+        this.time.delayedCall(500, () => {
+            console.log("Dando 20 de damage");
+            this.#activeEnemyMonster.takeDamage(20, () => {
+                this.#enemyAttack();
+                console.log("Error 2", this.#activePlayerAttackIndex);
+               
+            });
+        });
+    });
+}
 
-  }
+
   #enemyAttack() {
     this.#battleMenu.updateInfoPaneMessagesAndWaitForInput([`for ${this.#activeEnemyMonster.name} used ${this.#activeEnemyMonster.attacks[0].name}`], () => {
       this.time.delayedCall(500, () => {

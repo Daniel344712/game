@@ -28,3 +28,12 @@ export const UI_ASSET_KEYS = Object.freeze({
 export const DATA_ASSET_KEYS = Object.freeze({
   ATTACKS: 'ATTACKS',
 })
+
+export const WORLD_ASSET_KEYS = Object.freeze({
+  WORLD_BACKGROUND: "WORLD_BACKGROUND",
+})
+
+export const CHARACTER_ASSET_KEYS = Object.freeze({
+  PLAYER: "PLAYER",
+  NPC: 'NPC',
+})

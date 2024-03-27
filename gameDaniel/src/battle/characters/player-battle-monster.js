@@ -37,8 +37,10 @@ export class PlayerBattleMonster extends BattleMonster{
    * @param {number} damage
    * @param {() => void} [callback]
    */
+  
   takeDamage(damage, callback) {
     super.takeDamage(damage, callback)
     this.#setHealthBarText()
+    
   }
 }

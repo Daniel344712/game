@@ -69,7 +69,9 @@ export class BattleMenu {
   /**@types {number | undefined} */
   get selectedAttack() {
     if (this.#ActiveBattleMenu === ACTIVE_BATTLE_MENU.BATTLE_MOVE_SELECT) {
+      console.log("ERROR 2",this.#selectedMoveIndex)
       return this.#selectedMoveIndex
+    
     }
     return undefined;
   }
@@ -135,11 +137,14 @@ export class BattleMenu {
    * @param {() => void} [callback] 
    */
   updateInfoPaneMessagesAndWaitForInput(messages, callback) {
+    console.log("updateInfoPaneMessagesAndWaitForInput " + messages.toString());
     this.#queuedInfoPanelMessages = messages;
     this.#queuedInfoPanelCallback = callback;
     this.#updateInfoPaneWithMessage();
   }
+
   #updateInfoPaneWithMessage() {
+    console.log("updateInfoPaneWithMessage called");
     this.#waitingForPlayerInput = false;
     this.#battleTextGameObjectLine1.setText('').setAlpha(1);
     //check if all messages habe been displayed from the queue and call the callback
@@ -152,8 +157,9 @@ export class BattleMenu {
     }
     // get first message from queue and animate message
     const messageToDisplay = this.#queuedInfoPanelMessages.shift();
+    console.log("displaying message " + messageToDisplay);
     this.#battleTextGameObjectLine1.setText(messageToDisplay);
-    this.#waitingForPlayerInput = false;
+    this.#waitingForPlayerInput = true;
   }
   #createMainBattleMenu() {
     this.#battleTextGameObjectLine1 = this.#scene.add.text(20, 468, 'what should', BATTLE_UI_TEXT_STYLE);

@@ -1,10 +1,12 @@
 import {
   BATTLE_ASSET_KEYS,
   BATTLE_BACKGROUND_ASSET_KEYS,
+  CHARACTER_ASSET_KEYS,
   DATA_ASSET_KEYS,
   HEALTH_BAR_ASSET_KEYS,
   MONSTER_ASSET_KEYS,
   UI_ASSET_KEYS,
+  WORLD_ASSET_KEYS,
 } from '../assets/asset-keys.js';
 import Phaser from '../lib/phaser.js';
 import { SCENE_KEYS } from './scene-keys.js';
@@ -22,6 +24,8 @@ export class PreloadScene extends Phaser.Scene {
     const monsterTamerAssetPath = 'assets/images/monster-tamer';
     const kenneysAssetPath = 'assets/images/kenneys-assets';
     const UIPATH = 'assets/images/ui'
+    const axulArtAssetPath = 'assets/images/axulart'
+    const pbGamesAssetPath = 'assets/images/parabellum-games'
 
     // battle backgrounds
     this.load.image(
@@ -76,11 +80,24 @@ export class PreloadScene extends Phaser.Scene {
     )
     //load json data
     this.load.json(DATA_ASSET_KEYS.ATTACKS, 'assets/data/attacks.json')
+   //load world assets
+    this.load.image(WORLD_ASSET_KEYS.WORLD_BACKGROUND, `${monsterTamerAssetPath}/map/level_background.png`  )
+    //load character images
+    this.load.spritesheet(CHARACTER_ASSET_KEYS.PLAYER, `${axulArtAssetPath}/character/custom.png`, {
+      frameWidth: 64,
+      frameHeight: 88,
+    })
+    this.load.spritesheet(CHARACTER_ASSET_KEYS.NPC, `${pbGamesAssetPath}/characters.png`, {
+      frameWidth: 16,
+      frameHeight: 16,
+    })
   }
 
+ 
+ 
 
   create() {
     console.log(`[${PreloadScene.name}:create] invoked`);
-    this.scene.start(SCENE_KEYS.BATTLE_SCENE);
+    this.scene.start(SCENE_KEYS.WORLD_SCENE);
   }
 }
