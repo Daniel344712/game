@@ -34,23 +34,23 @@ export class Controls{
         }
         return false
     }
-    getDirectionJustPressed(){
-        if(this.#cursorKeys === undefined){
-            return DIRECTION.NONE;
-        }
-          /**@type {import('../common/direction.js').Direction} */
-    let selectedDirection = DIRECTION.NONE;
-    if (Phaser.Input.Keyboard.JustDown(this.#cursorKeys.left)) {
-      selectedDirection = DIRECTION.LEFT;
-    } else if (Phaser.Input.Keyboard.JustDown(this.#cursorKeys.right)) {
-      selectedDirection = DIRECTION.RIGHT;
-    } else if (Phaser.Input.Keyboard.JustDown(this.#cursorKeys.up)) {
-      selectedDirection = DIRECTION.UP;
-    } else if (Phaser.Input.Keyboard.JustDown(this.#cursorKeys.down)) {
-      selectedDirection = DIRECTION.DOWN;
-    }
-    return selectedDirection
-    }
+    // getDirectionJustPressed(){
+    //     if(this.#cursorKeys === undefined){
+    //         return DIRECTION.NONE;
+    //     }
+    //       /**@type {import('../common/direction.js').Direction} */
+    // let selectedDirection = DIRECTION.NONE;
+    // if (Phaser.Input.Keyboard.JustDown(this.#cursorKeys.left)) {
+    //   selectedDirection = DIRECTION.LEFT;
+    // } else if (Phaser.Input.Keyboard.JustDown(this.#cursorKeys.right)) {
+    //   selectedDirection = DIRECTION.RIGHT;
+    // } else if (Phaser.Input.Keyboard.JustDown(this.#cursorKeys.up)) {
+    //   selectedDirection = DIRECTION.UP;
+    // } else if (Phaser.Input.Keyboard.JustDown(this.#cursorKeys.down)) {
+    //   selectedDirection = DIRECTION.DOWN;
+    // }
+    // return selectedDirection
+    // }
 
     getDirectionKeyPressedDown(){
         if(this.#cursorKeys === undefined){

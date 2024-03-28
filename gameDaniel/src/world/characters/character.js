@@ -1,6 +1,7 @@
 import Phaser from '../../lib/phaser.js';
 import { DIRECTION } from '../../common/direction.js';
 import { getTargetPositionFromGameObjectPositionAndDirection } from '../../utils/grid-utils.js';
+import phaser from '../../lib/phaser.js';
 
 /**
  * @typedef CharacterConfig
@@ -11,7 +12,8 @@ import { getTargetPositionFromGameObjectPositionAndDirection } from '../../utils
  * @property {import('../../types/typedef.js').Coordinate} position the starting position of the character
  * @property {import('../../common/direction.js').Direction} direction the direction the character is currently facing
  * @property {() => void} [spriteGridMovementFinishedCallback] an optional callback that will be called after each step of the grid movement is complete
- */
+ *  @property {Phaser.Tilemaps.TilemapLayer} [colissionLayer] */
+ 
 
 export class Character {
   /** @type {Phaser.Scene} */
@@ -28,6 +30,9 @@ export class Character {
   _previousTargetPosition;
   /** @protected @type {() => void | undefined} */
   _spriteGridMovementFinishedCallback;
+  /** @proteced  @type {Phaser.Tilemaps.TilemapLayer | undefined}*/
+  _collisionLayer
+
 
   /**
    * @param {CharacterConfig} config
@@ -46,7 +51,12 @@ export class Character {
       .sprite(config.position.x, config.position.y, config.assetKey, config.assetFrame || 0)
       .setOrigin(0);
     this._spriteGridMovementFinishedCallback = config.spriteGridMovementFinishedCallback;
+    this._collisionLayer = config.colissionLayer
   }
+    /** @type {Phaser.GameObjects.Sprite} */
+    get sprite() {
+      return this._phaserGameObject;
+    }
 
   /** @type {boolean} */
   get isMoving() {
@@ -89,11 +99,12 @@ export class Character {
    */
   _isBlockingTile() {
     if (this._direction === DIRECTION.NONE) {
-      return;
+      return false;
     }
 
-    // TODO: add in collision logic
-    return false;
+    const targetPosition = {...this._targetPosition}
+    const updatedPosition = getTargetPositionFromGameObjectPositionAndDirection(targetPosition, this._direction)
+    return this.#doesPositionCollideWithCollisionLayer(updatedPosition);
   }
 
   /**
@@ -131,5 +142,18 @@ export class Character {
         }
       },
     });
+  }
+  /**
+   * 
+   * @param {import('../../types/typedef.js').Coordinate} position 
+   * @returns {boolean}
+   */
+  #doesPositionCollideWithCollisionLayer(position){
+    if(!this._collisionLayer){
+      return false;
+    }
+    const { x, y} = position
+    const tile = this._collisionLayer.getTileAtWorldXY(x,y, true)
+    return tile.index !== -1;
   }
 }
