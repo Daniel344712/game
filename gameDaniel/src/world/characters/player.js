@@ -1,19 +1,46 @@
-import { CHARACTER_ASSET_KEYS } from "../../assets/asset-keys.js";
-import { Character } from "./character.js";
+import { CHARACTER_ASSET_KEYS } from '../../assets/asset-keys.js';
+import { DIRECTION } from '../../common/direction.js';
+import { exhaustiveGuard } from '../../utils/guard.js';
+import { Character } from './character.js';
 
 /**
- * @typedef {Omit<import("./character").CharacterConfig, 'assetKey' | 'assetFrame'>} PlayerConfig
+ * @typedef {Omit<import('./character').CharacterConfig, 'assetKey' | 'assetFrame'>} PlayerConfig
  */
-export class Player extends Character{
-     /**
-     * 
-     * @param {PlayerConfig} config 
+
+export class Player extends Character {
+    /**
+     * @param {PlayerConfig} config
      */
-    constructor(config){
+    constructor(config) {
         super({
             ...config,
             assetKey: CHARACTER_ASSET_KEYS.PLAYER,
             assetFrame: 7,
-        })
+        });
+    }
+    /**
+    ** @param {import('../../common/direction.js').Direction} direction 
+     @returns {void}
+    */
+    moveCharacter(direction) {
+        super.moveCharacter(direction)
+
+        switch (this._direction) {
+
+            case DIRECTION.DOWN:
+            case DIRECTION.LEFT:
+            case DIRECTION.RIGHT:
+            case DIRECTION.UP:
+                if (!this._phaserGameObject.anims.isPlaying || this._phaserGameObject.anims.currentAnim?.key !== `PLAYER_${this.direction}`) {
+                    console.log('Play anim ' + direction);
+                    this._phaserGameObject.play(`PLAYER_${this._direction}`);
+                }
+                break;
+            case DIRECTION.NONE:
+                break
+            default:
+                exhaustiveGuard(this._direction)
+
+        }
     }
 }
