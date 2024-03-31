@@ -274,7 +274,7 @@ export class BattleMenu {
       }
       return;
     }
-
+    
     if (this.#selectedBattleMenuOption === BATTLE_MENU_OPTIONS.ITEM) {
       switch (direction) {
         case DIRECTION.RIGHT:

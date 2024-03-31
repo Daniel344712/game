@@ -10,10 +10,11 @@ import { WorldScene } from './world-scene.js';
 /** @type {import('../types/typedef.js').Coordinate} */
 const PLAYER_POSITION = Object.freeze({
   x: 2 * TILE_SIZE,
-  y: 9.2 * TILE_SIZE,
+  y: 11.9* TILE_SIZE,
 });
 
-export class floorOne extends Phaser.Scene {
+
+export class floorTwo extends Phaser.Scene {
   /** @type {Player} */
   #player;
   /** @type {Controls} */
@@ -27,7 +28,7 @@ export class floorOne extends Phaser.Scene {
 
   constructor() {
     super({
-      key: SCENE_KEYS.FLOORONE_BACKGROUND,
+      key: SCENE_KEYS.FLOORTWO_BACKGROUND,
     });
   }
 
@@ -36,8 +37,8 @@ export class floorOne extends Phaser.Scene {
   }
 
   create() {
-    console.log(`[${floorOne.name}:preload] invoked`);
-    this.cameras.main.setBounds(0, 0, 1000, 1000);
+    console.log(`[${floorTwo.name}:preload] invoked`);
+    this.cameras.main.setBounds(0, 0, 1100, 900);
     this.cameras.main.setZoom(0.7);
 
     const map = this.make.tilemap({ key: WORLD_ASSET_KEYS.WORLD_MAIN_LEVEL });
@@ -49,11 +50,11 @@ export class floorOne extends Phaser.Scene {
     }
     this.#encounterLayer = map.createLayer('Encounter', encounterTiles, 0, 0);
     if (!this.#encounterLayer) {
-      console.log(`[${floorOne.name}:create] encounter error while creating encounter layer using data from tiled`);
+      console.log(`[${floorTwo.name}:create] encounter error while creating encounter layer using data from tiled`);
       return;
     }
     this.#encounterLayer.setAlpha(TILED_COLLISION_LAYER_ALPHA).setDepth(2);
-    this.add.image(0, 0, WORLD_ASSET_KEYS.FLOORONE_BACKGROUND, 0).setOrigin(0);
+    this.add.image(0, 0, WORLD_ASSET_KEYS.FLOORTWO_BACKGROUND, 0).setOrigin(0);
     let portal =  this.add.image(0, 0, WORLD_ASSET_KEYS.portal, 0);
     portal.setScale(0.1);
     portal.setPosition(1400,500);
@@ -78,7 +79,7 @@ export class floorOne extends Phaser.Scene {
     const instructionText = this.add.text(
         this.#player.sprite.x - 1,
         this.#player.sprite.y - 500,
-        '¡Bienvenido a piso uno te encontraras con nuevos monstruos. Recuerda que tienes que ir al siguiente portal para continuar con el siguiente nivel',
+        '¡Bienvenido a piso dos te encontraras con nuevos monstruos. Recuerda que tienes que ir al siguiente portal para continuar con el siguiente nivel',
         {
           fontFamily: 'Arial',
           fontSize: '15px',
@@ -130,7 +131,7 @@ export class floorOne extends Phaser.Scene {
     if (!tile || tile.index === -1) {
       return;
     }
-    console.log(`[${floorOne.name}:handlePlayerMovementUpdate] player is in an encounter zone`);
+    console.log(`[${floorTwo.name}:handlePlayerMovementUpdate] player is in an encounter zone`);
     this.#wildMonsterEncountered = Math.random() < 0.9;
     
     if (!this.#encounterLayer) {
@@ -141,10 +142,10 @@ export class floorOne extends Phaser.Scene {
     if (!isInEncounterZone) {
       return;
     }
-    console.log(`[${floorOne.name}:handlePlayerMovementUpdate] player is in an encounter zone`);
+    console.log(`[${floorTwo.name}:handlePlayerMovementUpdate] player is in an encounter zone`);
     this.#wildMonsterEncountered = Math.random() < 0.9;
     if (this.#wildMonsterEncountered) {
-      console.log(`[${floorOne.name}:handlePlayerMovementUpdate] player encountered a wildMonster`);
+      console.log(`[${floorTwo.name}:handlePlayerMovementUpdate] player encountered a wildMonster`);
       this.cameras.main.fadeOut(2000);
       this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
         // Aquí deberías iniciar la escena de batalla
