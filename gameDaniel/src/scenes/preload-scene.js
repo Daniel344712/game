@@ -39,6 +39,10 @@ export class PreloadScene extends Phaser.Scene {
       BATTLE_BACKGROUND_ASSET_KEYS.BATTLE_SCENE_1,
       `${monsterTamerAssetPath}/battle-backgrounds/forest-background.png`
     );
+    this.load.image(
+      BATTLE_BACKGROUND_ASSET_KEYS.CAVE,
+      `${monsterTamerAssetPath}/battle-backgrounds/cave.png`
+    );
 
     // battle assets
     this.load.image(
@@ -81,8 +85,15 @@ export class PreloadScene extends Phaser.Scene {
       `${monsterTamerAssetPath}/monsters/warrior.png`
     );
     this.load.image(
-      MONSTER_ASSET_KEYS.DRUIDS,
-      `${monsterTamerAssetPath}/monsters/Druids.png`);
+      MONSTER_ASSET_KEYS.DEMON,
+      `${monsterTamerAssetPath}/monsters/demon.png`
+    );
+    this.load.image(
+      MONSTER_ASSET_KEYS.WORM,
+      `${monsterTamerAssetPath}/monsters/worm.png`
+    );
+  
+  
       this.load.image(
         MONSTER_ASSET_KEYS.GOBLIN,
         `${monsterTamerAssetPath}/monsters/Goblin.gif`);
@@ -112,6 +123,10 @@ export class PreloadScene extends Phaser.Scene {
       frameWidth: 64,
       frameHeight: 88,
     })
+    this.load.spritesheet(MONSTER_ASSET_KEYS.EvilWizard, `${monsterTamerAssetPath}/monsters/EvilWizard.png`, {
+      frameWidth: 150,
+      frameHeight: 150,
+    })
     // UI COMPONENTS FOR TITLE
     this.load.image(TILE_ASSET_KEYS.BACKGROUND, `${monsterTamerAssetPath}/ui/title/background.png`)
     this.load.image(TILE_ASSET_KEYS.PANEL, `${monsterTamerAssetPath}/ui/title/title_background.png`)
@@ -125,7 +140,7 @@ export class PreloadScene extends Phaser.Scene {
   create() {
     console.log(`[${PreloadScene.name}:create] invoked`);
     this.#createAnimations();
-    this.scene.start(SCENE_KEYS.TILE_SCENE);
+    this.scene.start(SCENE_KEYS.BATTLE_SCENE);
     
   }
 

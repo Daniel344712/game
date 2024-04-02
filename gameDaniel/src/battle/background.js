@@ -21,4 +21,7 @@ export class BackGround{
     showBattle_1(){
         this.#backgroundGameObject.setTexture(BATTLE_BACKGROUND_ASSET_KEYS.BATTLE_SCENE_1).setAlpha(1)
     }
+    showCave(){
+        this.#backgroundGameObject.setTexture(BATTLE_BACKGROUND_ASSET_KEYS.CAVE).setAlpha(1)
+    }
 }

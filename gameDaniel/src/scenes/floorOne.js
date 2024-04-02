@@ -25,9 +25,9 @@ export class floorOne extends Phaser.Scene {
   /** @type {Phaser.GameObjects.Image} */
   #portal;
 
-  constructor() {
+  constructor(sceneKey) {
     super({
-      key: SCENE_KEYS.FLOORONE_BACKGROUND,
+      key: sceneKey,
     });
   }
 

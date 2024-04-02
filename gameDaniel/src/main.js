@@ -4,8 +4,6 @@ import { PreloadScene } from './scenes/preload-scene.js';
 import { BattleScene } from './scenes/battle-scene.js';
 import { WorldScene } from './scenes/world-scene.js';
 import { floorOne } from './scenes/floorOne.js';
-import { floorTwo } from './scenes/floorTwo.js';
-import { BATTLE_SCENE_1 } from './scenes/battle-scene_1.js';
 import { TileScene } from './scenes/tile-scene.js';
 
 class GameSingleton {
@@ -26,11 +24,11 @@ class GameSingleton {
 
     this.game.scene.add(SCENE_KEYS.PRELOAD_SCENE, PreloadScene);
     this.game.scene.add(SCENE_KEYS.BATTLE_SCENE, WorldScene);
-    this.game.scene.add(SCENE_KEYS.BATTLE_SCENE, floorOne);
-    this.game.scene.add(SCENE_KEYS.BATTLE_SCENE, floorTwo);
+    this.game.scene.add(SCENE_KEYS.BATTLE_SCENE, new floorOne(SCENE_KEYS.FLOORONE_BACKGROUND));
+    this.game.scene.add(SCENE_KEYS.BATTLE_SCENE, new floorOne(SCENE_KEYS.FLOORTWO_BACKGROUND));
     this.game.scene.add(SCENE_KEYS.BATTLE_SCENE, BattleScene);
     this.game.scene.add(SCENE_KEYS.TILE_SCENE, TileScene);
-    this.game.scene.add(SCENE_KEYS.BATTLE_SCENE_1, BATTLE_SCENE_1);
+    //this.game.scene.add(SCENE_KEYS.BATTLE_SCENE_1, BATTLE_SCENE_1);
     this.game.scene.start(SCENE_KEYS.PRELOAD_SCENE);
     
   }

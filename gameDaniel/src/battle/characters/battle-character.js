@@ -31,17 +31,16 @@ export class BattleMonster {
     this._currentHealth = this._monsterDetails.currentHp;
     this._maxHealth = this._monsterDetails.maxHp;
     this._monsterAttacks = [];
-    
-  this._scene.children.add(CharacterFactory.createSkeleton(config, position));
-    this._scene.children.add(CharacterFactory.createGoblin(config, position));
+
+    this._scene.children.add(CharacterFactory.createMonster(config, position));
 
     this.#createHealthBarComponents(config.scaleHealthBarBackgroundImageByY);
     /** @protected @type {import('../../types/typedef.js').Attack[]} */
     const data = this._scene.cache.json.get(DATA_ASSET_KEYS.ATTACKS)
 
-    this._monsterDetails.attackIds.forEach((attackId) =>{
+    this._monsterDetails.attackIds.forEach((attackId) => {
       const monsterAttack = data.find((attack) => attack.id === attackId)
-      if(monsterAttack !== undefined){
+      if (monsterAttack !== undefined) {
         this._monsterAttacks.push(monsterAttack)
       }
     })
@@ -51,9 +50,9 @@ export class BattleMonster {
   get isFainted() {
     return this._currentHealth <= 0;
   }
-set isFainted(value) {
-  this._isFainted = value;
-}
+  set isFainted(value) {
+    this._isFainted = value;
+  }
   /** @type {string} */
   get name() {
     return this._monsterDetails.name;
@@ -119,5 +118,5 @@ set isFainted(value) {
       monsterHpText,
     ]);
   }
-  
+
 }

@@ -37,26 +37,101 @@ export class BattleScene extends Phaser.Scene {
   create() {
     console.log(`[${BattleScene.name}:create] invoked`);
     // create main background
-    const background = new BackGround(this)
-    background.showForest()
+    var background = Math.floor(Math.random() * 10) % 3;
+    switch (background) {
+      case 0:
+        const background = new BackGround(this)
+        background.showForest()
+        break
+        case 1:
+          const background1 = new BackGround(this)
+          background1.showBattle_1()
+          break
+          case 2:
+            const background2 = new BackGround(this)
+            background2.showCave()
+    }
+  
 
+    var monster = Math.floor(Math.random() * 10) % 5;
 
-
-
-    // render out the player and enemy monsters PATRON FACTORY
-    this.#activeEnemyMonster = new EnemyBattleMonster({
-      scene: this,
-      monsterDetails: {
-        name: MONSTER_ASSET_KEYS.SKELETON,
-        assetKey: MONSTER_ASSET_KEYS.SKELETON,
-        assetFrame: 0,
-        currentHp: 25,
-        maxHp: 25,
-        attackIds: [1],
-        baseAttack: 5,
-        currentLevel: 5,
-      }
-    })
+    switch (monster) {
+      case 0:
+        this.#activeEnemyMonster = new EnemyBattleMonster({
+          scene: this,
+          monsterDetails: {
+            name: MONSTER_ASSET_KEYS.SKELETON,
+            assetKey: MONSTER_ASSET_KEYS.SKELETON,
+            assetFrame: 0,
+            currentHp: 25,
+            maxHp: 25,
+            attackIds: [1],
+            baseAttack: 5,
+            currentLevel: 5,
+          }
+        })
+        break;
+      case 1:
+        this.#activeEnemyMonster = new EnemyBattleMonster({
+          scene: this,
+          monsterDetails: {
+            name: MONSTER_ASSET_KEYS.GOBLIN,
+            assetKey: MONSTER_ASSET_KEYS.GOBLIN,
+            assetFrame: 0,
+            currentHp: 25,
+            maxHp: 25,
+            attackIds: [1],
+            baseAttack: 5,
+            currentLevel: 5,
+          }
+        })
+        break;
+        case 2:
+          this.#activeEnemyMonster = new EnemyBattleMonster({
+            scene: this,
+            monsterDetails: {
+              name: MONSTER_ASSET_KEYS.DEMON,
+              assetKey: MONSTER_ASSET_KEYS.DEMON,
+              assetFrame: 0,
+              currentHp: 25,
+              maxHp: 25,
+              attackIds: [1],
+              baseAttack: 5,
+              currentLevel: 5,
+            }
+          })
+          break;
+          case 3:
+            this.#activeEnemyMonster = new EnemyBattleMonster({
+              scene: this,
+              monsterDetails: {
+                name: MONSTER_ASSET_KEYS.WORM,
+                assetKey: MONSTER_ASSET_KEYS.WORM,
+                assetFrame: 0,
+                currentHp: 25,
+                maxHp: 25,
+                attackIds: [1],
+                baseAttack: 5,
+                currentLevel: 5,
+              }
+            })
+            break;
+            case 4:
+              this.#activeEnemyMonster = new EnemyBattleMonster({
+                scene: this,
+                monsterDetails: {
+                  name: MONSTER_ASSET_KEYS.EvilWizard,
+                  assetKey: MONSTER_ASSET_KEYS.EvilWizard,
+                  assetFrame: 0,
+                  currentHp: 25,
+                  maxHp: 25,
+                  attackIds: [1],
+                  baseAttack: 5,
+                  currentLevel: 5,
+                }
+              })
+              break;
+    }
 
     this.#activePlayerMonster = new PlayerBattleMonster(
       {
@@ -69,11 +144,9 @@ export class BattleScene extends Phaser.Scene {
           maxHp: 25,
           attackIds: [2],
           baseAttack: 5,
-          currentLevel: 5,
-          
+          currentLevel: 5,          
         }
-      }
-      
+      }      
     );
 
 
@@ -149,8 +222,7 @@ export class BattleScene extends Phaser.Scene {
               }else {
                 this.#enemyAttack();
               }
-             
-              
+                           
                 console.log("Error 2", this.#activePlayerAttackIndex);
               //  if(this.#activePlayerMonster.isFainted){
               //    console.log("You lose");
