@@ -486,4 +486,5 @@ export class BattleMenu {
     }
     this.#selectedMoveIndex = selectedMoveIndex;
   }
+  
 }

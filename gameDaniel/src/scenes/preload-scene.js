@@ -5,6 +5,7 @@ import {
   DATA_ASSET_KEYS,
   HEALTH_BAR_ASSET_KEYS,
   MONSTER_ASSET_KEYS,
+  TILE_ASSET_KEYS,
   UI_ASSET_KEYS,
   WORLD_ASSET_KEYS,
 } from '../assets/asset-keys.js';
@@ -90,6 +91,10 @@ export class PreloadScene extends Phaser.Scene {
       UI_ASSET_KEYS.CURSOR,
       `${monsterTamerAssetPath}/ui/cursor.png`
     )
+    this.load.image(
+      UI_ASSET_KEYS.MENU_BACKGROUND,
+      `${kenneysAssetPath}/ui-space-expansion/glassPanel.png`
+    )
     //load json data
     this.load.json(DATA_ASSET_KEYS.ATTACKS, 'assets/data/attacks.json')
     this.load.json(DATA_ASSET_KEYS.ANIMATIONS, 'assets/data/animations.json')
@@ -107,10 +112,11 @@ export class PreloadScene extends Phaser.Scene {
       frameWidth: 64,
       frameHeight: 88,
     })
-    this.load.spritesheet(CHARACTER_ASSET_KEYS.NPC, `${pbGamesAssetPath}/characters.png`, {
-      frameWidth: 16,
-      frameHeight: 16,
-    })
+    // UI COMPONENTS FOR TITLE
+    this.load.image(TILE_ASSET_KEYS.BACKGROUND, `${monsterTamerAssetPath}/ui/title/background.png`)
+    this.load.image(TILE_ASSET_KEYS.PANEL, `${monsterTamerAssetPath}/ui/title/title_background.png`)
+    this.load.image(TILE_ASSET_KEYS.TITLE, `${monsterTamerAssetPath}/ui/title/title_text.png`)
+
   }
 
 
@@ -119,7 +125,7 @@ export class PreloadScene extends Phaser.Scene {
   create() {
     console.log(`[${PreloadScene.name}:create] invoked`);
     this.#createAnimations();
-    this.scene.start(SCENE_KEYS.BATTLE_SCENE);
+    this.scene.start(SCENE_KEYS.TILE_SCENE);
     
   }
 
