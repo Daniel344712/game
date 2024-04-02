@@ -32,7 +32,8 @@ export class BattleMonster {
     this._maxHealth = this._monsterDetails.maxHp;
     this._monsterAttacks = [];
     
-    this._scene.children.add(CharacterFactory.createSkeleton(config, position));
+  this._scene.children.add(CharacterFactory.createSkeleton(config, position));
+    this._scene.children.add(CharacterFactory.createGoblin(config, position));
 
     this.#createHealthBarComponents(config.scaleHealthBarBackgroundImageByY);
     /** @protected @type {import('../../types/typedef.js').Attack[]} */
@@ -50,7 +51,9 @@ export class BattleMonster {
   get isFainted() {
     return this._currentHealth <= 0;
   }
-
+set isFainted(value) {
+  this._isFainted = value;
+}
   /** @type {string} */
   get name() {
     return this._monsterDetails.name;

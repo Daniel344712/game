@@ -118,7 +118,7 @@ export class floorOne extends Phaser.Scene {
     // Check if the player is close to the portal
     if (distanceToPortal < this.#player.sprite.displayWidth / 2 + this.#portal.displayWidth / 2) {
       // Start the new scene
-      this.scene.start(SCENE_KEYS.BATTLE_SCENE);
+      this.scene.start(SCENE_KEYS.FLOORTWO_BACKGROUND);
     }
   }
 

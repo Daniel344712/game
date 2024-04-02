@@ -76,6 +76,7 @@ export class BattleMenu {
     return undefined;
   }
   showMainBattleMenu() {
+
     this.#ActiveBattleMenu = ACTIVE_BATTLE_MENU.BATTLE_MAIN;
     this.#battleTextGameObjectLine1.setText('what should');
     this.#mainBattleMenuPhaserContainerGameObject.setAlpha(1);
@@ -86,6 +87,7 @@ export class BattleMenu {
   }
 
   hideMainBattleMenu() {
+   
     this.#mainBattleMenuPhaserContainerGameObject.setAlpha(0);
     this.#battleTextGameObjectLine1.setAlpha(0);
     this.#battleTextGameObjectLine2.setAlpha(0);
@@ -119,16 +121,16 @@ export class BattleMenu {
         this.#handlePlayerChooseMainBattleOption();
         return;
       }
+      console.log("Error 3: ActiveBattleMenu: " + this.#ActiveBattleMenu);
       if (this.#ActiveBattleMenu === ACTIVE_BATTLE_MENU.BATTLE_MOVE_SELECT) {
         this.#handlePlayerChooseAttack();
         return
       }
-
       return;
     }
     this.#updateSelectedBattleMenuOptionFromInput(input);
-    this.#moveMainBattleMenuCursor();
     this.#updateSelectedMoveMenuOptionFromInput(input);
+    this.#moveMainBattleMenuCursor();
     this.#moveMoveSelectBattleMenuCursor();
   }
   /**
@@ -152,6 +154,7 @@ export class BattleMenu {
       if (this.#queuedInfoPanelCallback) {
         this.#queuedInfoPanelCallback();
         this.#queuedInfoPanelCallback = undefined;
+
       }
       return
     }
@@ -184,7 +187,7 @@ export class BattleMenu {
       this.#scene.add.text(240, 70, BATTLE_MENU_OPTIONS.FLEE, BATTLE_UI_TEXT_STYLE),
       this.#mainBattleMenuCursorPhaserImageGameObject,
     ]);
-
+    
     this.hideMainBattleMenu();
   }
 
@@ -431,8 +434,9 @@ export class BattleMenu {
   }
   #handlePlayerChooseMainBattleOption() {
     this.hideMainBattleMenu();
+    
     if (this.#selectedBattleMenuOption === BATTLE_MENU_OPTIONS.FIGHT) {
-      this.showMonsterAttackSubMenu();
+     this.showMonsterAttackSubMenu();
       return
     }
     if (this.#selectedBattleMenuOption === BATTLE_MENU_OPTIONS.SWITCH) {
@@ -459,9 +463,13 @@ export class BattleMenu {
 
   }
   #handlePlayerChooseAttack() {
+    console.log("ERROR 6", this.#selectedMoveIndex)
+
     let selectedMoveIndex = 0;
     switch (this.#selectedAttackMenuOption) {
+   
       case ATTACK_MOVE_OPTIONS.MOVE_1:
+        console.log("ERROR 7", selectedMoveIndex)
         selectedMoveIndex = 0;
         break;
       case ATTACK_MOVE_OPTIONS.MOVE_2:
@@ -476,6 +484,6 @@ export class BattleMenu {
       default:
         exhaustiveGuard(this.#selectedAttackMenuOption)
     }
-    this.#selectedMoveIndex = selectedMoveIndex
+    this.#selectedMoveIndex = selectedMoveIndex;
   }
 }

@@ -7,6 +7,9 @@ import { MONSTER_ASSET_KEYS } from "../assets/asset-keys.js";
      static createPlayer(scene) {
         return new Phaser.GameObjects.Image(scene, 168, 344, MONSTER_ASSET_KEYS.WARRIOR, 0);
       }
+      static createGoblin(config, position) {
+        return new Phaser.GameObjects.Image(config.scene, position.x, position.y, config.monsterDetails.assetKey, config.monsterDetails.assetFrame || 0).setFlipX(true)
+      }
     }
    
   

@@ -34,6 +34,10 @@ export class PreloadScene extends Phaser.Scene {
       BATTLE_BACKGROUND_ASSET_KEYS.FOREST,
       `${monsterTamerAssetPath}/battle-backgrounds/awesomeCavePixelArt.png`
     );
+    this.load.image(
+      BATTLE_BACKGROUND_ASSET_KEYS.BATTLE_SCENE_1,
+      `${monsterTamerAssetPath}/battle-backgrounds/forest-background.png`
+    );
 
     // battle assets
     this.load.image(
@@ -75,6 +79,12 @@ export class PreloadScene extends Phaser.Scene {
       MONSTER_ASSET_KEYS.WARRIOR,
       `${monsterTamerAssetPath}/monsters/warrior.png`
     );
+    this.load.image(
+      MONSTER_ASSET_KEYS.DRUIDS,
+      `${monsterTamerAssetPath}/monsters/Druids.png`);
+      this.load.image(
+        MONSTER_ASSET_KEYS.GOBLIN,
+        `${monsterTamerAssetPath}/monsters/Goblin.gif`);
     //ui assets
     this.load.image(
       UI_ASSET_KEYS.CURSOR,

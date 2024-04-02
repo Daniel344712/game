@@ -18,4 +18,7 @@ export class BackGround{
     showForest(){
         this.#backgroundGameObject.setTexture(BATTLE_BACKGROUND_ASSET_KEYS.FOREST).setAlpha(1)
     }
+    showBattle_1(){
+        this.#backgroundGameObject.setTexture(BATTLE_BACKGROUND_ASSET_KEYS.BATTLE_SCENE_1).setAlpha(1)
+    }
 }

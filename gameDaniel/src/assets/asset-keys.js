@@ -1,10 +1,13 @@
 export const BATTLE_BACKGROUND_ASSET_KEYS = Object.freeze({
   FOREST: 'FOREST',
+  BATTLE_SCENE_1: 'BATTLE_SCENE_1',
 });
 
 export const MONSTER_ASSET_KEYS = Object.freeze({
   WARRIOR: 'WARRIOR',
   SKELETON: 'SKELETON',
+  DRUIDS: 'DRUIDS',
+  GOBLIN: 'GOBLIN'
  
 });
 

@@ -78,7 +78,6 @@ export class BattleScene extends Phaser.Scene {
 
 
 
-
     // render out the main info and sub info panes
 
     this.#battleMenu = new BattleMenu(this, this.#activePlayerMonster)
@@ -144,23 +143,39 @@ export class BattleScene extends Phaser.Scene {
         this.time.delayedCall(500, () => {
             console.log("Dando 20 de damage");
             this.#activeEnemyMonster.takeDamage(20, () => {
+              if (this.#activeEnemyMonster.isFainted) {
+                console.log("You win");
+                this.scene.start(SCENE_KEYS.FLOORONE_BACKGROUND);
+              }else {
                 this.#enemyAttack();
+              }
+             
+              
                 console.log("Error 2", this.#activePlayerAttackIndex);
-               
+              //  if(this.#activePlayerMonster.isFainted){
+              //    console.log("You lose");
+              //    this.scene.start(SCENE_KEYS.FLOORTWO_BACKGROUND);
+              //  }
             });
         });
     });
 }
 
 
-  #enemyAttack() {
-    this.#battleMenu.updateInfoPaneMessagesAndWaitForInput([`for ${this.#activeEnemyMonster.name} used ${this.#activeEnemyMonster.attacks[0].name}`], () => {
-      this.time.delayedCall(500, () => {
-        this.#activePlayerMonster.takeDamage(20, () => {
-          this.#enemyAttack();
-          this.#battleMenu.showMainBattleMenu();
-        })
-      })
-    })
-  }
+#enemyAttack() {
+  this.#battleMenu.updateInfoPaneMessagesAndWaitForInput([`for ${this.#activeEnemyMonster.name} used ${this.#activeEnemyMonster.attacks[0].name}`], () => {
+    if (this.#activeEnemyMonster.isFainted) {
+      console.log("You win");
+      this.scene.start(SCENE_KEYS.FLOORONE_BACKGROUND);
+    }
+    this.time.delayedCall(500, () => {
+      this.#activePlayerMonster.takeDamage(20, () => {
+        this.#battleMenu.showMainBattleMenu();
+     
+        
+      });
+    });
+  });
+}
+
 }
