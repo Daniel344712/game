@@ -8,8 +8,8 @@ import { TILED_COLLISION_LAYER_ALPHA, TILE_SIZE } from '../world/characters/conf
 
 /** @type {import('../types/typedef.js').Coordinate} */
 const PLAYER_POSITION = Object.freeze({
-  x: 6 * TILE_SIZE,
-  y: 21 * TILE_SIZE,
+  x: 9 * TILE_SIZE,
+  y: 20.9 * TILE_SIZE,
 });
 
 export class WorldScene extends Phaser.Scene {
@@ -27,6 +27,7 @@ export class WorldScene extends Phaser.Scene {
   }
 
   create() {
+    console.log(PLAYER_POSITION)
     console.log(`[${WorldScene.name}:preload] invoked`);
     this.cameras.main.setBounds(0, 0, 1280, 2176);
     this.cameras.main.setZoom(0.8);
@@ -58,8 +59,8 @@ export class WorldScene extends Phaser.Scene {
       scene: this,
       position: PLAYER_POSITION,
       direction: DIRECTION.DOWN,
-      // @ts-ignore
-      collisionLayer: collisionLayer,
+
+      colissionLayer: collisionLayer,
     });
 
     // Make the camera follow the player
@@ -73,6 +74,17 @@ export class WorldScene extends Phaser.Scene {
   }
 
   update() {
+    const x = 320;
+    const y = 1337.6;
+    const distanceToShop = Phaser.Math.Distance.Between(
+      this.#player.sprite.x,
+      this.#player.sprite.y,
+      x,
+      y
+    );
+    if(distanceToShop < this.#player.sprite.displayWidth / 2 + this.#portal.displayWidth / 2){
+      this.scene.start(SCENE_KEYS.BATTLE_SCENE);
+    }
     const selectedDirection = this.#controls.getDirectionKeyPressedDown();
     if (selectedDirection !== DIRECTION.NONE) {
       this.#player.moveCharacter(selectedDirection);
