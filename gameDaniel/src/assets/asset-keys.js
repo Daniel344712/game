@@ -31,6 +31,7 @@ export const HEALTH_BAR_ASSET_KEYS = Object.freeze({
 export const UI_ASSET_KEYS = Object.freeze({
   CURSOR: 'CURSOR',
   MENU_BACKGROUND: 'MENU_BACKGROUND',
+  EXIT: 'EXIT',
 })
 
 export const DATA_ASSET_KEYS = Object.freeze({
@@ -47,6 +48,8 @@ export const WORLD_ASSET_KEYS = Object.freeze({
   FLOORTWO_BACKGROUND: "FLOORTWO_BACKGROUND",
   WORLD_ENCOUNTER_ZONE: "WORLD_ENCOUNTER_ZONE",
   portal: "portal",
+  SHOP_SCENE: "SHOP_SCENE",
+  ICON_SHOP: "ICON_SHOP",
 
 })
 

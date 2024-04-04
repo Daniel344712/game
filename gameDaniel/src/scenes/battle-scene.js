@@ -2,6 +2,7 @@ import {
   BATTLE_ASSET_KEYS,
   HEALTH_BAR_ASSET_KEYS,
   MONSTER_ASSET_KEYS,
+  UI_ASSET_KEYS,
 } from '../assets/asset-keys.js';
 import { BattleMenu } from '../battle/ui/menu/battle-menu.js';
 import Phaser from '../lib/phaser.js';
@@ -35,6 +36,7 @@ export class BattleScene extends Phaser.Scene {
     this.#activePlayerAttackIndex = -1;
   }
   create() {
+   
     console.log(`[${BattleScene.name}:create] invoked`);
     // create main background
     var background = Math.floor(Math.random() * 10) % 3;
@@ -51,6 +53,13 @@ export class BattleScene extends Phaser.Scene {
             const background2 = new BackGround(this)
             background2.showCave()
     }
+    const exit = this.add.image(0, 0, UI_ASSET_KEYS.EXIT, 0).setOrigin(-30,0);
+    this.exitContainer = this.add.container(10, 10);
+    this.exitContainer.add(exit);
+    exit.setInteractive(); 
+    exit.on('pointerup', () => { 
+      this.scene.start(SCENE_KEYS.TILE_SCENE);
+    });
   
 
     var monster = Math.floor(Math.random() * 10) % 5;
@@ -161,6 +170,9 @@ export class BattleScene extends Phaser.Scene {
     console.log(this.#activeEnemyMonster.isFainted)
   }
   update() {
+    
+    
+
     const wasSpaceKeyPressed = Phaser.Input.Keyboard.JustDown(this.#cursorKeys.space)
     //console.log("Error 1: was space key pressed: " + wasSpaceKeyPressed);
     console.log(this.#cursorKeys.space.isDown);

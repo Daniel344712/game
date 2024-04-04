@@ -103,6 +103,10 @@ export class PreloadScene extends Phaser.Scene {
       `${monsterTamerAssetPath}/ui/cursor.png`
     )
     this.load.image(
+      UI_ASSET_KEYS.EXIT,
+      `${monsterTamerAssetPath}/ui/exitButton.png`
+    )
+    this.load.image(
       UI_ASSET_KEYS.MENU_BACKGROUND,
       `${kenneysAssetPath}/ui-space-expansion/glassPanel.png`
     )
@@ -116,6 +120,8 @@ export class PreloadScene extends Phaser.Scene {
     this.load.tilemapTiledJSON(WORLD_ASSET_KEYS.WORLD_MAIN_LEVEL, `assets/data/level.json`)
     this.load.image(WORLD_ASSET_KEYS.WORLD_COLLISION, `${monsterTamerAssetPath}/map/collision.png`)
     this.load.image(WORLD_ASSET_KEYS.portal, `${monsterTamerAssetPath}/map/portal.png`)
+    this.load.image(WORLD_ASSET_KEYS.ICON_SHOP, `${monsterTamerAssetPath}/map/icon.png`)
+    this.load.image(WORLD_ASSET_KEYS.SHOP_SCENE, `${monsterTamerAssetPath}/map/shop.png`)
     this.load.image(WORLD_ASSET_KEYS.WORLD_FOREGROUND, `${monsterTamerAssetPath}/map/level_foreground.png`)
         this.load.image(WORLD_ASSET_KEYS.WORLD_ENCOUNTER_ZONE, `${monsterTamerAssetPath}/map/encounter.png`)
     //load character images

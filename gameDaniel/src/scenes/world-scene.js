@@ -1,5 +1,5 @@
 import Phaser from '../lib/phaser.js';
-import { WORLD_ASSET_KEYS } from '../assets/asset-keys.js';
+import { UI_ASSET_KEYS, WORLD_ASSET_KEYS } from '../assets/asset-keys.js';
 import { SCENE_KEYS } from './scene-keys.js';
 import { Player } from '../world/characters/player.js';
 import { Controls } from '../utils/controls.js';
@@ -20,6 +20,7 @@ export class WorldScene extends Phaser.Scene {
   /** @type {Phaser.GameObjects.Image} */
   #portal;
 
+
   constructor() {
     super({
       key: SCENE_KEYS.WORLD_SCENE,
@@ -27,6 +28,7 @@ export class WorldScene extends Phaser.Scene {
   }
 
   create() {
+
     console.log(PLAYER_POSITION)
     console.log(`[${WorldScene.name}:preload] invoked`);
     this.cameras.main.setBounds(0, 0, 1280, 2176);
@@ -46,6 +48,7 @@ export class WorldScene extends Phaser.Scene {
     }
     collisionLayer.setAlpha(TILED_COLLISION_LAYER_ALPHA).setDepth(2);
     this.add.image(0, 0, WORLD_ASSET_KEYS.WORLD_BACKGROUND, 0).setOrigin(0);
+
 
     // Create and position the portal
     const portal = this.add.image(100, 500, WORLD_ASSET_KEYS.portal, 0);
@@ -71,9 +74,20 @@ export class WorldScene extends Phaser.Scene {
 
     // Fade in the scene
     this.cameras.main.fadeIn(1000, 0, 0, 0);
+    this.exitContainer = this.add.container(0);
+    const exit = this.add.image(0, 0, UI_ASSET_KEYS.EXIT, 0).setOrigin();
+    this.exitContainer.add(exit);
+    exit.setInteractive();
+    exit.on('pointerup', () => {
+      this.scene.start(SCENE_KEYS.TILE_SCENE);
+    });
+
   }
 
   update() {
+    this.exitContainer.x = this.cameras.main.scrollX + -80; // Margen izquierdo
+    this.exitContainer.y = this.cameras.main.scrollY + -50; // Margen superior
+
     const x = 320;
     const y = 1337.6;
     const distanceToShop = Phaser.Math.Distance.Between(
@@ -82,8 +96,8 @@ export class WorldScene extends Phaser.Scene {
       x,
       y
     );
-    if(distanceToShop < this.#player.sprite.displayWidth / 2 + this.#portal.displayWidth / 2){
-      this.scene.start(SCENE_KEYS.BATTLE_SCENE);
+    if (distanceToShop < this.#player.sprite.displayWidth / 2 + this.#portal.displayWidth / 2) {
+      this.scene.start(SCENE_KEYS.SHOP_SCENE);
     }
     const selectedDirection = this.#controls.getDirectionKeyPressedDown();
     if (selectedDirection !== DIRECTION.NONE) {
@@ -102,6 +116,10 @@ export class WorldScene extends Phaser.Scene {
     if (distanceToPortal < this.#player.sprite.displayWidth / 2 + this.#portal.displayWidth / 2) {
       // Start the floorOne scene when the player is close to the portal
       this.scene.start(SCENE_KEYS.FLOORONE_BACKGROUND);
+    }
+    const distanceToTavern = Phaser.Math.Distance.Between(this.#player.sprite.x, this.#player.sprite.y, 832, 1337);
+    if (distanceToTavern < this.#player.sprite.displayWidth / 2 + this.#portal.displayWidth / 2) {
+      this.scene.start(SCENE_KEYS.BATTLE_SCENE);
     }
   }
 }
