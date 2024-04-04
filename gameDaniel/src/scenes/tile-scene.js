@@ -18,7 +18,7 @@ const PLAYER_INPUT_CURSOR_POSITION = Object.freeze({
 /** @enum {MainMenuOptions} */
 const MAIN_MENU_OPTIONS = Object.freeze({
   NEW_GAME: 'NEW_GAME',
-
+  CONTINUE: 'CONTINUE',
 })
 export class TileScene extends Phaser.Scene {
   /** @type {Phaser.GameObjects.Image} */
@@ -37,7 +37,7 @@ export class TileScene extends Phaser.Scene {
     console.log(`[${TileScene.name}:create] invoked`);
 
     this.#selectedMenuOption = MAIN_MENU_OPTIONS.NEW_GAME;
-    
+    this.#selectedMenuOption = MAIN_MENU_OPTIONS.CONTINUE;
 
     this.add.image(0, 0, TILE_ASSET_KEYS.BACKGROUND).setOrigin(0).setScale(0.58)
     this.add.image(this.scale.width / 2, 150, TILE_ASSET_KEYS.PANEL).setScale(0.25, 0.25).setAlpha(0.5)
@@ -65,11 +65,16 @@ export class TileScene extends Phaser.Scene {
       targets: this.#mainMenuCursorPhaserImageGameObject,
     })
     this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+      if (this.#selectedMenuOption === MAIN_MENU_OPTIONS.CONTINUE) {
+        this.scene.stop();
+        this.scene.resume(SCENE_KEYS.WORLD_SCENE);
+
+      }
+    })
+    this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
       if (this.#selectedMenuOption === MAIN_MENU_OPTIONS.NEW_GAME) {
         this.scene.start(SCENE_KEYS.WORLD_SCENE)
-        return
       }
-
     })
     this.#controls = new Controls(this)
 
@@ -100,7 +105,7 @@ export class TileScene extends Phaser.Scene {
         this.#mainMenuCursorPhaserImageGameObject.y = 41
         break;
       case DIRECTION.DOWN:
-        this.#selectedMenuOption = MAIN_MENU_OPTIONS.NEW_GAME
+        this.#selectedMenuOption = MAIN_MENU_OPTIONS.CONTINUE
         this.#mainMenuCursorPhaserImageGameObject.y = 91
         break;
       default:

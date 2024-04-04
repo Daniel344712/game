@@ -13,6 +13,7 @@ import { BackGround } from '../battle/background.js';
 import { HealthBar } from '../battle/ui/health-bar.js';
 import { EnemyBattleMonster } from '../battle/characters/enemy-battle-monster.js';
 import { PlayerBattleMonster } from '../battle/characters/player-battle-monster.js';
+import { floorOne } from './floorOne.js';
 
 
 
@@ -27,6 +28,8 @@ export class BattleScene extends Phaser.Scene {
   #activePlayerMonster;
   /**@type {number} */
   #activePlayerAttackIndex
+  /**@type {floorOne} */
+  #activePlayerPosition
   constructor() {
     super({
       key: SCENE_KEYS.BATTLE_SCENE,
@@ -34,9 +37,10 @@ export class BattleScene extends Phaser.Scene {
   }
   init() {
     this.#activePlayerAttackIndex = -1;
+ 
   }
   create() {
-   
+  
     console.log(`[${BattleScene.name}:create] invoked`);
     // create main background
     var background = Math.floor(Math.random() * 10) % 3;
@@ -230,7 +234,9 @@ export class BattleScene extends Phaser.Scene {
             this.#activeEnemyMonster.takeDamage(20, () => {
               if (this.#activeEnemyMonster.isFainted) {
                 console.log("You win");
-                this.scene.start(SCENE_KEYS.FLOORONE_BACKGROUND);
+
+                this.scene.stop();
+                this.scene.resume(SCENE_KEYS.FLOORONE_BACKGROUND);
               }else {
                 this.#enemyAttack();
               }
@@ -248,10 +254,10 @@ export class BattleScene extends Phaser.Scene {
 
 #enemyAttack() {
   this.#battleMenu.updateInfoPaneMessagesAndWaitForInput([`for ${this.#activeEnemyMonster.name} used ${this.#activeEnemyMonster.attacks[0].name}`], () => {
-    if (this.#activeEnemyMonster.isFainted) {
-      console.log("You win");
-      this.scene.start(SCENE_KEYS.FLOORONE_BACKGROUND);
-    }
+    // if (this.#activeEnemyMonster.isFainted) {
+    //   console.log("You win");
+    //   this.scene.start(SCENE_KEYS.FLOORONE_BACKGROUND);
+    // }
     this.time.delayedCall(500, () => {
       this.#activePlayerMonster.takeDamage(20, () => {
         this.#battleMenu.showMainBattleMenu();

@@ -73,13 +73,16 @@ export class WorldScene extends Phaser.Scene {
     this.#controls = new Controls(this);
 
     // Fade in the scene
-    this.cameras.main.fadeIn(1000, 0, 0, 0);
+  
     this.exitContainer = this.add.container(0);
     const exit = this.add.image(0, 0, UI_ASSET_KEYS.EXIT, 0).setOrigin();
     this.exitContainer.add(exit);
-    exit.setInteractive();
+    exit.setInteractive(); 
+   
     exit.on('pointerup', () => {
-      this.scene.start(SCENE_KEYS.TILE_SCENE);
+      
+      this.scene.pause();
+      this.scene.run(SCENE_KEYS.TILE_SCENE);
     });
 
   }
