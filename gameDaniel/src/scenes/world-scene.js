@@ -5,6 +5,7 @@ import { Player } from '../world/characters/player.js';
 import { Controls } from '../utils/controls.js';
 import { DIRECTION } from '../common/direction.js';
 import { TILED_COLLISION_LAYER_ALPHA, TILE_SIZE } from '../world/characters/config.js';
+import { TileScene } from './tile-scene.js';
 
 /** @type {import('../types/typedef.js').Coordinate} */
 const PLAYER_POSITION = Object.freeze({
@@ -19,6 +20,8 @@ export class WorldScene extends Phaser.Scene {
   #controls;
   /** @type {Phaser.GameObjects.Image} */
   #portal;
+  /** @type {TileScene} */
+  #newGame
 
 
   constructor() {
@@ -28,7 +31,7 @@ export class WorldScene extends Phaser.Scene {
   }
 
   create() {
-
+      
     console.log(PLAYER_POSITION)
     console.log(`[${WorldScene.name}:preload] invoked`);
     this.cameras.main.setBounds(0, 0, 1280, 2176);

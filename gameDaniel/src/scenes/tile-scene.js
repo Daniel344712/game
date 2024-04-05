@@ -37,11 +37,10 @@ export class TileScene extends Phaser.Scene {
     console.log(`[${TileScene.name}:create] invoked`);
 
     this.#selectedMenuOption = MAIN_MENU_OPTIONS.NEW_GAME;
-    this.#selectedMenuOption = MAIN_MENU_OPTIONS.CONTINUE;
 
     this.add.image(0, 0, TILE_ASSET_KEYS.BACKGROUND).setOrigin(0).setScale(0.58)
     this.add.image(this.scale.width / 2, 150, TILE_ASSET_KEYS.PANEL).setScale(0.25, 0.25).setAlpha(0.5)
-    this.add.image(this.scale.width / 2, 150, TILE_ASSET_KEYS.TITLE).setScale(0.55).setAlpha(0.55)
+    this.add.image(this.scale.width / 2, 150, TILE_ASSET_KEYS.TITLE).setScale(0.35).setAlpha(1)
     const menuBgWidth = 500;
     const menuBg = this.add.image(125, 0, UI_ASSET_KEYS.MENU_BACKGROUND).setOrigin(0).setScale(2.4, 2)
     const menuBgContainer = this.add.container(0, 0, [menuBg])
@@ -64,53 +63,55 @@ export class TileScene extends Phaser.Scene {
       },
       targets: this.#mainMenuCursorPhaserImageGameObject,
     })
-    this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-      if (this.#selectedMenuOption === MAIN_MENU_OPTIONS.CONTINUE) {
-        this.scene.stop();
-        this.scene.resume(SCENE_KEYS.WORLD_SCENE);
 
-      }
-    })
-    this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-      if (this.#selectedMenuOption === MAIN_MENU_OPTIONS.NEW_GAME) {
-        this.scene.start(SCENE_KEYS.WORLD_SCENE)
-      }
-    })
     this.#controls = new Controls(this)
-
   }
+  
   update() {
     if (this.#controls.isInputLocked) {
-      return
+      return;
     }
-    const wasSpaceKeyPressed = this.#controls.wasSpaceKeyPressed()
+
+    const wasSpaceKeyPressed = this.#controls.wasSpaceKeyPressed();
     if (wasSpaceKeyPressed) {
-      this.cameras.main.fadeOut(1000, 0, 0, 0)
+      this.cameras.main.fadeOut(1000, 0, 0, 0);
       this.#controls.lockInput = true;
-      return
+      this.startSelectedScene(); 
+      return;
     }
-    const selectedDirection = this.#controls.getDirectionKeyPressedDown()
+
+    const selectedDirection = this.#controls.getDirectionKeyPressedDown();
     if (selectedDirection !== DIRECTION.NONE) {
-      this.#moveMenuSelectCursor(selectedDirection)
+      this.#moveMenuSelectCursor(selectedDirection);
     }
   }
+
   /**
-   *  @param {import('../common/direction.js').Direction} direction
-    @returns {void}
-  */
+   * @param {import('../common/direction.js').Direction} direction
+   * @returns {void}
+   */
   #moveMenuSelectCursor(direction) {
     switch (direction) {
       case DIRECTION.UP:
-        this.#selectedMenuOption = MAIN_MENU_OPTIONS.NEW_GAME
-        this.#mainMenuCursorPhaserImageGameObject.y = 41
+        this.#selectedMenuOption = MAIN_MENU_OPTIONS.NEW_GAME;
+        this.#mainMenuCursorPhaserImageGameObject.y = 41;
         break;
       case DIRECTION.DOWN:
-        this.#selectedMenuOption = MAIN_MENU_OPTIONS.CONTINUE
-        this.#mainMenuCursorPhaserImageGameObject.y = 91
+        this.#selectedMenuOption = MAIN_MENU_OPTIONS.CONTINUE;
+        this.#mainMenuCursorPhaserImageGameObject.y = 91;
         break;
       default:
+        
+    }
+  }
 
 
+  startSelectedScene() {
+    if (this.#selectedMenuOption === MAIN_MENU_OPTIONS.NEW_GAME) {
+      this.scene.start(SCENE_KEYS.WORLD_SCENE);
+    } else if (this.#selectedMenuOption === MAIN_MENU_OPTIONS.CONTINUE) {
+      this.scene.stop();
+      this.scene.resume(SCENE_KEYS.WORLD_SCENE);
     }
   }
 }
