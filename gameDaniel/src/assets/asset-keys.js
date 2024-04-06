@@ -50,6 +50,7 @@ export const WORLD_ASSET_KEYS = Object.freeze({
   portal: "portal",
   SHOP_SCENE: "SHOP_SCENE",
   ICON_SHOP: "ICON_SHOP",
+  DOLLAR_SIGN: "DOLLAR_SIGN",
 
 })
 

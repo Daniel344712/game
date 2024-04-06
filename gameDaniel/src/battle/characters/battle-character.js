@@ -50,6 +50,19 @@ export class BattleMonster {
   get isFainted() {
     return this._currentHealth <= 0;
   }
+  get maxHealth() {
+    return this._maxHealth;
+  }
+  set maxHealth(value) {
+    this._maxHealth = value;
+  }
+  get currentHealth() {
+    return this._currentHealth;
+  }
+  set currentHealth(value) {
+    this._currentHealth = value;
+  }
+
   set isFainted(value) {
     this._isFainted = value;
   }
@@ -80,6 +93,14 @@ export class BattleMonster {
   takeDamage(damage, callback) {
     // update current monster health and animate health bar
     this._currentHealth -= damage;
+    if (this._currentHealth < 0) {
+      this._currentHealth = 0;
+    }
+    this._healthBar.setMeterPercentageAnimated(this._currentHealth / this._maxHealth, { callback });
+  }
+  takeHealth(health, callback) {
+    // update current monster health and animate health bar
+    this._currentHealth += health;
     if (this._currentHealth < 0) {
       this._currentHealth = 0;
     }

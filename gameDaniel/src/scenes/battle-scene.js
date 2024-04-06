@@ -14,6 +14,7 @@ import { HealthBar } from '../battle/ui/health-bar.js';
 import { EnemyBattleMonster } from '../battle/characters/enemy-battle-monster.js';
 import { PlayerBattleMonster } from '../battle/characters/player-battle-monster.js';
 import { floorOne } from './floorOne.js';
+import { SHOP_SCENE } from './shop-scene.js';
 
 
 
@@ -30,6 +31,8 @@ export class BattleScene extends Phaser.Scene {
   #activePlayerAttackIndex
   /**@type {floorOne} */
   #activePlayerPosition
+   /**@type {SHOP_SCENE} */
+  #numberOfPotions
   constructor() {
     super({
       key: SCENE_KEYS.BATTLE_SCENE,

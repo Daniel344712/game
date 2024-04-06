@@ -75,7 +75,9 @@ export class WorldScene extends Phaser.Scene {
     // Initialize player controls
     this.#controls = new Controls(this);
 
-    // Fade in the scene
+   this.dollarContainer = this.add.container(0);
+   const dollar = this.add.image(0, 0, WORLD_ASSET_KEYS.DOLLAR_SIGN, 0).setOrigin().setScale(0.4);
+    this.dollarContainer.add(dollar);
   
     this.exitContainer = this.add.container(0);
     const exit = this.add.image(0, 0, UI_ASSET_KEYS.EXIT, 0).setOrigin();
@@ -91,6 +93,8 @@ export class WorldScene extends Phaser.Scene {
   }
 
   update() {
+    this.dollarContainer.x = this.cameras.main.scrollX + -75; // Margen izquierdo
+    this.dollarContainer.y = this.cameras.main.scrollY + 10; // Margen superior
     this.exitContainer.x = this.cameras.main.scrollX + -80; // Margen izquierdo
     this.exitContainer.y = this.cameras.main.scrollY + -50; // Margen superior
 

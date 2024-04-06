@@ -107,6 +107,10 @@ export class PreloadScene extends Phaser.Scene {
       `${monsterTamerAssetPath}/ui/exitButton.png`
     )
     this.load.image(
+      WORLD_ASSET_KEYS.DOLLAR_SIGN,
+      `${monsterTamerAssetPath}/ui/single_dollar.png`
+    )
+    this.load.image(
       UI_ASSET_KEYS.MENU_BACKGROUND,
       `${kenneysAssetPath}/ui-space-expansion/glassPanel.png`
     )
@@ -146,7 +150,7 @@ export class PreloadScene extends Phaser.Scene {
   create() {
     console.log(`[${PreloadScene.name}:create] invoked`);
     this.#createAnimations();
-    this.scene.start(SCENE_KEYS.WORLD_SCENE);
+    this.scene.start(SCENE_KEYS.FLOORONE_BACKGROUND);
     
   }
 

@@ -17,6 +17,7 @@ export const MENU_TEXT_STYLE = {
     color: '#4D4A49',
     fontSize: '30px',
 }
+
 const PLAYER_INPUT_CURSOR_POSITION = Object.freeze({
     x: 150,
 })
@@ -26,20 +27,22 @@ const PLAYER_INPUT_CURSOR_POSITION = Object.freeze({
 const MAIN_MENU_OPTIONS = Object.freeze({
     POTION: 'POTION',
     EXIT: 'EXIT'
-
 })
 
 export class SHOP_SCENE extends Phaser.Scene {
     /** @type {Player} */
     #player;
-    /** @type {Phaser.GameObjects.Image} */
-    #portal;
+
     /** @type {Phaser.GameObjects.Image} */
     #mainMenuCursorPhaserImageGameObject
     /** @type {Controls} */
     #controls
     /** @type {MainMenuOptions} */
     #selectedMenuOption
+    /** @type {Phaser.GameObjects.Text} */
+    #moneyText;
+    #potions = 0;
+    #newMoney
 
     constructor() {
         super({
@@ -48,6 +51,7 @@ export class SHOP_SCENE extends Phaser.Scene {
     }
 
     create() {
+
         this.#selectedMenuOption = MAIN_MENU_OPTIONS.POTION;
         console.log(PLAYER_POSITION)
         console.log(`[${SHOP_SCENE.name}:preload] invoked`);
@@ -57,15 +61,17 @@ export class SHOP_SCENE extends Phaser.Scene {
 
         this.add.image(0, 0, WORLD_ASSET_KEYS.WORLD_BACKGROUND, 0).setOrigin(0)
         this.add.image(0, 0, WORLD_ASSET_KEYS.SHOP_SCENE, 0).setOrigin(-0.4, -0.2);
+        this.add.image(0, 0, WORLD_ASSET_KEYS.DOLLAR_SIGN, 0).setOrigin(-0.8, -2).setScale(0.5)
         this.add.image(0, 0, WORLD_ASSET_KEYS.ICON_SHOP, 0).setOrigin(-2.6, -1.5).setScale(0.5, 0.5)
 
         const menuBgWidth = 500;
 
         const menuBgContainer = this.add.container(0, 0)
         const newGameText = this.add.text(menuBgWidth / 2, 40, 'Potion Health', MENU_TEXT_STYLE).setOrigin(-0.1, 3)
+        this.#moneyText = this.add.text(menuBgWidth / 100, 40, localStorage.getItem('money'), MENU_TEXT_STYLE).setOrigin(4, 9).setColor('white');
         const exitText = this.add.text(menuBgWidth / 2, 90, 'Exit', MENU_TEXT_STYLE).setOrigin(-1.5, 3)
 
-        const menuContainer = this.add.container(0, 0, [menuBgContainer, newGameText, exitText])
+        const menuContainer = this.add.container(0, 0, [menuBgContainer, newGameText, exitText, this.#moneyText])
         menuContainer.setPosition(this.scale.width / 2 - menuBgWidth / 2, 300)
 
         this.#mainMenuCursorPhaserImageGameObject = this.add.image(PLAYER_INPUT_CURSOR_POSITION.x, -40, UI_ASSET_KEYS.CURSOR).setOrigin(-4, 0.5).setScale(2.5)
@@ -81,21 +87,17 @@ export class SHOP_SCENE extends Phaser.Scene {
             },
             targets: this.#mainMenuCursorPhaserImageGameObject,
         })
-       
+
         this.#controls = new Controls(this)
     }
- 
+
     update() {
         if (this.#controls.isInputLocked) {
             return
         }
         const wasSpaceKeyPressed = this.#controls.wasSpaceKeyPressed()
         if (wasSpaceKeyPressed) {
-            if (this.#selectedMenuOption === MAIN_MENU_OPTIONS.EXIT) {
-                this.scene.start(SCENE_KEYS.WORLD_SCENE)
-                this.cameras.main.fadeOut(1000, 0, 0, 0)
-            this.#controls.lockInput = true;
-            }
+            this.startSelectedScene()
             return
         }
         const selectedDirection = this.#controls.getDirectionKeyPressedDown()
@@ -122,4 +124,26 @@ export class SHOP_SCENE extends Phaser.Scene {
 
         }
     }
+    startSelectedScene() {
+        if (this.#selectedMenuOption === MAIN_MENU_OPTIONS.POTION) {
+            const playerPotionCost = 20;
+
+            var currentMoney = localStorage.getItem('money');
+            var newMoney = parseInt(currentMoney) - playerPotionCost;
+            localStorage.setItem('money', newMoney.toString());
+            this.#moneyText.setText(newMoney.toString()).setOrigin(11, 9).setColor('white');
+            var currentPotions = localStorage.getItem('potions');
+            var newPotions = parseInt(currentPotions) + 1;
+            localStorage.setItem('potions', newPotions.toString());
+
+        }
+        if (this.#newMoney === 0){
+            this.scene.start(SCENE_KEYS.WORLD_SCENE);
+        }
+        if (this.#selectedMenuOption === MAIN_MENU_OPTIONS.EXIT) {
+            this.scene.start(SCENE_KEYS.WORLD_SCENE);
+        }
+    }
+    
+    
 }

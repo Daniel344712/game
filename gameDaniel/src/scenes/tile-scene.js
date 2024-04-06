@@ -50,6 +50,7 @@ export class TileScene extends Phaser.Scene {
     const menuContainer = this.add.container(0, 0, [menuBgContainer, newGameText, exitText])
     menuContainer.setPosition(this.scale.width / 2 - menuBgWidth / 2, 300)
 
+   
     this.#mainMenuCursorPhaserImageGameObject = this.add.image(PLAYER_INPUT_CURSOR_POSITION.x, 41, UI_ASSET_KEYS.CURSOR).setOrigin(0.5).setScale(2.5)
     menuBgContainer.add(this.#mainMenuCursorPhaserImageGameObject)
     this.tweens.add({
