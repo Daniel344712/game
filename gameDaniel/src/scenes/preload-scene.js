@@ -150,7 +150,7 @@ export class PreloadScene extends Phaser.Scene {
   create() {
     console.log(`[${PreloadScene.name}:create] invoked`);
     this.#createAnimations();
-    this.scene.start(SCENE_KEYS.FLOORONE_BACKGROUND);
+    this.scene.start(SCENE_KEYS.SHOP_SCENE);
     
   }
 

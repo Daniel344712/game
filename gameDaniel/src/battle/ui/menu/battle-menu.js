@@ -448,12 +448,15 @@ export class BattleMenu {
     if (this.#selectedBattleMenuOption === BATTLE_MENU_OPTIONS.ITEM) {
       this.#ActiveBattleMenu = ACTIVE_BATTLE_MENU.BATTLE_ITEM;
       
-      if(this.#activePlayerMonster.currentHealth === this.#activePlayerMonster.maxHealth){
+      // Obtener la cantidad actual de pociones
+      var currentPotions = parseInt(localStorage.getItem('potions'));
+    
+      if(this.#activePlayerMonster.currentHealth === this.#activePlayerMonster.maxHealth) {
         this.updateInfoPaneMessagesAndWaitForInput(['Your monster is already at full health...'], () => {
           this.#switchToMainBattleMenu();
         });
       } else if(currentPotions > 0) {
-        var currentPotions = parseInt(localStorage.getItem('potions')) 
+   
         this.#activePlayerMonster.takeHealth(20, () => {
           localStorage.setItem('potions', (currentPotions - 1).toString());
           this.updateInfoPaneMessagesAndWaitForInput(['You used a potion...'], () => {
@@ -461,12 +464,13 @@ export class BattleMenu {
           });
         });
       } else {
+        // Mostrar mensaje si no hay pociones disponibles
         this.updateInfoPaneMessagesAndWaitForInput(['You have no potions...'], () => {
           this.#switchToMainBattleMenu();
         });
       }
-     
     }
+    
     
     if (this.#selectedBattleMenuOption === BATTLE_MENU_OPTIONS.FLEE) {
       this.#ActiveBattleMenu = ACTIVE_BATTLE_MENU.BATTLE_FLEE;

@@ -127,23 +127,25 @@ export class SHOP_SCENE extends Phaser.Scene {
     startSelectedScene() {
         if (this.#selectedMenuOption === MAIN_MENU_OPTIONS.POTION) {
             const playerPotionCost = 20;
-
             var currentMoney = localStorage.getItem('money');
             var newMoney = parseInt(currentMoney) - playerPotionCost;
-            localStorage.setItem('money', newMoney.toString());
-            this.#moneyText.setText(newMoney.toString()).setOrigin(11, 9).setColor('white');
-            var currentPotions = localStorage.getItem('potions');
-            var newPotions = parseInt(currentPotions) + 1;
-            localStorage.setItem('potions', newPotions.toString());
 
+            if (newMoney === -20) {
+                this.scene.start(SCENE_KEYS.WORLD_SCENE);
+            } else {
+                localStorage.setItem('money', newMoney.toString());
+                this.#moneyText.setText(newMoney.toString()).setOrigin(11, 9).setColor('white');
+                var currentPotions = localStorage.getItem('potions');
+                var newPotions = parseInt(currentPotions) + 1;
+                localStorage.setItem('potions', newPotions.toString());
+            }
         }
-        if (this.#newMoney === 0){
-            this.scene.start(SCENE_KEYS.WORLD_SCENE);
-        }
+
         if (this.#selectedMenuOption === MAIN_MENU_OPTIONS.EXIT) {
             this.scene.start(SCENE_KEYS.WORLD_SCENE);
         }
     }
-    
-    
+
+
+
 }
