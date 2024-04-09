@@ -1,11 +1,12 @@
 import { BATTLE_ASSET_KEYS, DATA_ASSET_KEYS } from '../../assets/asset-keys.js';
-import { CharacterFactory } from '../../scenes/characterFactory.js';
+import { MonsterDetails } from '../../Patrones/Builder/MonsterDetails.js';
+import { CharacterFactory } from '../../Patrones/Factory/characterFactory.js';
 import { HealthBar } from '../ui/health-bar.js';
 
 export class BattleMonster {
   /** @protected @type {Phaser.Scene} */
   _scene;
-  /** @protected @type {import('../../types/typedef.js').Monster} */
+  /** @protected @type {MonsterDetails} */
   _monsterDetails;
   /** @protected @type {HealthBar} */
   _healthBar;
@@ -28,8 +29,8 @@ export class BattleMonster {
   constructor(config, position) {
     this._scene = config.scene;
     this._monsterDetails = config.monsterDetails;
-    this._currentHealth = this._monsterDetails.currentHp;
-    this._maxHealth = this._monsterDetails.maxHp;
+    this._currentHealth = this._monsterDetails.healthInformation.currentHp;
+    this._maxHealth = this._monsterDetails.healthInformation.maxHp;
     this._monsterAttacks = [];
 
     this._scene.children.add(CharacterFactory.createMonster(config, position));
@@ -38,7 +39,7 @@ export class BattleMonster {
     /** @protected @type {import('../../types/typedef.js').Attack[]} */
     const data = this._scene.cache.json.get(DATA_ASSET_KEYS.ATTACKS)
 
-    this._monsterDetails.attackIds.forEach((attackId) => {
+    this._monsterDetails.attackinformation.attackIds.forEach((attackId) => {
       const monsterAttack = data.find((attack) => attack.id === attackId)
       if (monsterAttack !== undefined) {
         this._monsterAttacks.push(monsterAttack)
@@ -78,12 +79,12 @@ export class BattleMonster {
 
   /** @type {number} */
   get baseAttack() {
-    return this._monsterDetails.baseAttack;
+    return this._monsterDetails.attackinformation.baseAttack;
   }
 
   /** @type {number} */
   get level() {
-    return this._monsterDetails.currentLevel;
+    return this._monsterDetails.level;
   }
 
   /**

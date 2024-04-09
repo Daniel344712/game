@@ -1,9 +1,10 @@
+import { MonsterDetails } from "../Patrones/Builder/MonsterDetails.js";
 import Phaser from "../lib/phaser.js";
 /**
  * @typedef BattleMonsterConfig
  * @type {Object}
  * @property {Phaser.Scene} scene
- * @property {Monster} monsterDetails
+ * @property {MonsterDetails} monsterDetails
  * @property {number} [scaleHealthBarBackgroundImageByY=1]
  */
 
