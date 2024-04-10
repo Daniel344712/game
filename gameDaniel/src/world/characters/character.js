@@ -12,7 +12,8 @@ import phaser from '../../lib/phaser.js';
  * @property {import('../../types/typedef.js').Coordinate} position the starting position of the character
  * @property {import('../../common/direction.js').Direction} direction the direction the character is currently facing
  * @property {() => void} [spriteGridMovementFinishedCallback] an optional callback that will be called after each step of the grid movement is complete
- *  @property {Phaser.Tilemaps.TilemapLayer} [colissionLayer] */
+ * @property {(Character) => void} [playerCreatedCallback] an optional callback that will be called after player is created
+ * @property {Phaser.Tilemaps.TilemapLayer} [colissionLayer] */
  
 
 export class Character {
@@ -50,8 +51,14 @@ export class Character {
     this._phaserGameObject = this._scene.add
       .sprite(config.position.x, config.position.y, config.assetKey, config.assetFrame || 0)
       .setOrigin(0);
+
     this._spriteGridMovementFinishedCallback = config.spriteGridMovementFinishedCallback;
     this._collisionLayer = config.colissionLayer
+
+    if (config.playerCreatedCallback)
+    {
+      config.playerCreatedCallback(this);
+    }
   }
     /** @type {Phaser.GameObjects.Sprite} */
     get sprite() {
@@ -155,5 +162,9 @@ export class Character {
     const { x, y} = position
     const tile = this._collisionLayer.getTileAtWorldXY(x,y, true)
     return tile.index !== -1;
+  }
+
+  setMovementFinishedCallback(callback) {
+    this._spriteGridMovementFinishedCallback = callback;
   }
 }

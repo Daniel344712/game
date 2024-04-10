@@ -7,13 +7,10 @@ import {
 import { BattleMenu } from '../battle/ui/menu/battle-menu.js';
 import Phaser from '../lib/phaser.js';
 import { SCENE_KEYS } from './scene-keys.js';
-import { CharacterFactory } from '../Patrones/Factory/characterFactory.js';
 import { DIRECTION } from '../common/direction.js';
 import { BackGround } from '../battle/background.js';
-import { HealthBar } from '../battle/ui/health-bar.js';
 import { EnemyBattleMonster } from '../battle/characters/enemy-battle-monster.js';
 import { PlayerBattleMonster } from '../battle/characters/player-battle-monster.js';
-import { floorOne } from './floorOne.js';
 import { SHOP_SCENE } from './shop-scene.js';
 import { Director } from '../Patrones/Builder/Director.js';
 
@@ -30,8 +27,6 @@ export class BattleScene extends Phaser.Scene {
   #activePlayerMonster;
   /**@type {number} */
   #activePlayerAttackIndex
-  /**@type {floorOne} */
-  #activePlayerPosition
   /**@type {SHOP_SCENE} */
   #numberOfPotions
   constructor() {
