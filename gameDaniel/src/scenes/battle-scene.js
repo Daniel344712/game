@@ -13,6 +13,7 @@ import { EnemyBattleMonster } from '../battle/characters/enemy-battle-monster.js
 import { PlayerBattleMonster } from '../battle/characters/player-battle-monster.js';
 import { SHOP_SCENE } from './shop-scene.js';
 import { Director } from '../Patrones/Builder/Director.js';
+import { MenuCompositeManager } from '../Patrones/Compositor/MenuCompositorManager.js';
 
 
 
@@ -158,7 +159,7 @@ export class BattleScene extends Phaser.Scene {
           0,
           25,
           25,
-          [2,3],
+          [2, 3],
           5,
           5,
         )
@@ -166,7 +167,20 @@ export class BattleScene extends Phaser.Scene {
 
     // render out the main info and sub info panes
 
-    this.#battleMenu = new BattleMenu(this, this.#activePlayerMonster)
+    var menuManager = new MenuCompositeManager();
+    const fightGroupId = 0;
+    menuManager.newMenuGroup(fightGroupId, "FIGHT");
+    menuManager.newMenuGroup(1, "FLEE");
+    menuManager.newMenuGroup(2, "ITEM");
+    menuManager.newMenuGroup(3, "SWITCH");
+
+    for (let i = 0; i < 4; i++) {
+      menuManager.newMenuOption(i + 4, this.#activePlayerMonster.attacks[i]?.name || '-');
+      menuManager.assignMenuOptioToGroup(i + 4, fightGroupId);
+    }
+
+
+    this.#battleMenu = new BattleMenu(this, this.#activePlayerMonster, menuManager);
     this.#battleMenu.showMainBattleMenu();
     this.#cursorKeys = this.input.keyboard.createCursorKeys();
 
