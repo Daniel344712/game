@@ -5,6 +5,8 @@ import { exhaustiveGuard } from '../../../utils/guard.js';
 import { ACTIVE_BATTLE_MENU, ATTACK_MOVE_OPTIONS, BATTLE_MENU_OPTIONS } from '../../battle-menu-options.js';
 import { BATTLE_UI_TEXT_STYLE } from '../../battle-menu-config.js';
 import { BattleMonster } from '../../characters/battle-character.js';
+import { PlayerInventoryFacade } from '../../../Patrones/Fachada/PlayerInventoryFachada.js';
+import { PlayerItems } from '../../../Patrones/Fachada/PlayerItems.js';
 
 
 
@@ -449,7 +451,9 @@ export class BattleMenu {
       this.#ActiveBattleMenu = ACTIVE_BATTLE_MENU.BATTLE_ITEM;
       
       // Obtener la cantidad actual de pociones
-      var currentPotions = parseInt(localStorage.getItem('potions'));
+      var facade = new PlayerInventoryFacade();
+      var playerItems = new PlayerItems();
+      var currentPotions = Number(playerItems.getCurrentPotions());
     
       if(this.#activePlayerMonster.currentHealth === this.#activePlayerMonster.maxHealth) {
         this.updateInfoPaneMessagesAndWaitForInput(['Your monster is already at full health...'], () => {
@@ -458,13 +462,13 @@ export class BattleMenu {
       } else if(currentPotions > 0) {
    
         this.#activePlayerMonster.takeHealth(20, () => {
-          localStorage.setItem('potions', (currentPotions - 1).toString());
+          facade.usePotion();
           this.updateInfoPaneMessagesAndWaitForInput(['You used a potion...'], () => {
             this.#switchToMainBattleMenu();
           });
         });
       } else {
-        // Mostrar mensaje si no hay pociones disponibles
+        facade.canUsePotion();
         this.updateInfoPaneMessagesAndWaitForInput(['You have no potions...'], () => {
           this.#switchToMainBattleMenu();
         });

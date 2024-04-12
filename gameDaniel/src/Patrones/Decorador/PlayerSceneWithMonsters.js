@@ -1,7 +1,7 @@
-import Phaser from '../lib/phaser.js';
-import { WORLD_ASSET_KEYS } from '../assets/asset-keys.js';
-import { TILED_COLLISION_LAYER_ALPHA, TILE_SIZE } from '../world/characters/config.js';
-import { WorldScene } from './world-scene.js';
+import Phaser from '../../lib/phaser.js';
+import { WORLD_ASSET_KEYS } from '../../assets/asset-keys.js';
+import { TILED_COLLISION_LAYER_ALPHA, TILE_SIZE } from '../../world/characters/config.js';
+import { WorldScene } from '../../scenes/world-scene.js';
 import { SceneWithPlayer } from './SceneWithPlayer.js';
 
 
@@ -86,6 +86,9 @@ export class PlayerSceneWithMonsters extends SceneWithPlayer {
       this.#floorScene.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
         this.launchBattle();
         console.log('Starting Battle Scene...');
+      });
+      this.#floorScene.events.once(Phaser.Scenes.Events.RESUME, () => {
+        this.#floorScene.cameras.main.fadeIn(5000, 0, 0, 0);
       });
     }
   }

@@ -3,7 +3,7 @@ import { WORLD_ASSET_KEYS } from '../assets/asset-keys.js';
 import { SCENE_KEYS } from './scene-keys.js';
 import { Controls } from '../utils/controls.js';
 import { DIRECTION } from '../common/direction.js';
-import { SceneWithPlayer } from './SceneWithPlayer.js';
+import { SceneWithPlayer } from '../Patrones/Decorador/SceneWithPlayer.js';
 
 export class FloorScene extends SceneWithPlayer {
   /** @type {Controls} */
@@ -73,10 +73,6 @@ export class FloorScene extends SceneWithPlayer {
     });
 
     this.cameras.main.fadeIn(5000, 0, 0, 0);
-
-    this.events.on(Phaser.Scenes.Events.RESUME, () => {
-      this.cameras.main.fadeIn(5000, 0, 0, 0);
-    });
   }
 
   update() {

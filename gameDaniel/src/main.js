@@ -9,7 +9,7 @@ import { SHOP_SCENE } from './scenes/shop-scene.js';
 import { WORLD_ASSET_KEYS } from './assets/asset-keys.js';
 import { TILE_SIZE } from './world/characters/config.js';
 import { DIRECTION } from './common/direction.js';
-import { PlayerSceneWithMonsters } from './scenes/PlayerSceneWithMonsters.js';
+import { PlayerSceneWithMonsters } from './Patrones/Decorador/PlayerSceneWithMonsters.js';
 
 class GameSingleton {
   constructor() {

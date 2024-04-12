@@ -158,7 +158,7 @@ export class BattleScene extends Phaser.Scene {
           0,
           25,
           25,
-          [2],
+          [2,3],
           5,
           5,
         )

@@ -1,5 +1,5 @@
-import Phaser from '../lib/phaser.js';
-import { Player } from '../world/characters/player.js';
+import Phaser from '../../lib/phaser.js';
+import { Player } from '../../world/characters/player.js';
 
 export class SceneWithPlayer extends Phaser.Scene {
   /** @type {Player} */

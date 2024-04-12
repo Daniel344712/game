@@ -5,6 +5,7 @@ import { Player } from '../world/characters/player.js';
 import { Controls } from '../utils/controls.js';
 import { DIRECTION } from '../common/direction.js';
 import { TILED_COLLISION_LAYER_ALPHA, TILE_SIZE } from '../world/characters/config.js';
+import { PlayerInventoryFacade } from '../Patrones/Fachada/PlayerInventoryFachada.js';
 
 /** @type {import('../types/typedef.js').Coordinate} */
 const PLAYER_POSITION = Object.freeze({
@@ -126,18 +127,14 @@ export class SHOP_SCENE extends Phaser.Scene {
     }
     startSelectedScene() {
         if (this.#selectedMenuOption === MAIN_MENU_OPTIONS.POTION) {
-            const playerPotionCost = 20;
-            var currentMoney = localStorage.getItem('money');
-            var newMoney = parseInt(currentMoney) - playerPotionCost;
+            var facade = new PlayerInventoryFacade();
 
-            if (newMoney === -20) {
+            if (!facade.canBuyPotion()) {
                 this.scene.start(SCENE_KEYS.WORLD_SCENE);
             } else {
-                localStorage.setItem('money', newMoney.toString());
-                this.#moneyText.setText(newMoney.toString()).setOrigin(11, 9).setColor('white');
-                var currentPotions = localStorage.getItem('potions');
-                var newPotions = parseInt(currentPotions) + 1;
-                localStorage.setItem('potions', newPotions.toString());
+                facade.buyPotion()
+                
+                this.#moneyText.setText(facade.getCurrentMoney()).setOrigin(11, 9).setColor('white');
             }
         }
 
