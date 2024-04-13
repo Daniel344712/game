@@ -188,9 +188,6 @@ export class BattleScene extends Phaser.Scene {
     console.log(this.#activeEnemyMonster.isFainted)
   }
   update() {
-
-
-
     const wasSpaceKeyPressed = Phaser.Input.Keyboard.JustDown(this.#cursorKeys.space)
     //console.log("Error 1: was space key pressed: " + wasSpaceKeyPressed);
     console.log(this.#cursorKeys.space.isDown);
@@ -275,8 +272,6 @@ export class BattleScene extends Phaser.Scene {
       this.time.delayedCall(500, () => {
         this.#activePlayerMonster.takeDamage(20, () => {
           this.#battleMenu.showMainBattleMenu();
-
-
         });
       });
     });

@@ -20,6 +20,8 @@ export class BattleMonster {
   _monsterAttacks;
   /** @protected @type {Phaser.GameObjects.Container} */
   _phaserHealthBarGameContainer;
+  /** @protected @type {Phaser.GameObjects.Text} */
+  _attackTextGameObject;
 
   /**
    * @param {import('../../types/typedef.js').BattleMonsterConfig} config
@@ -44,7 +46,33 @@ export class BattleMonster {
       if (monsterAttack !== undefined) {
         this._monsterAttacks.push(monsterAttack)
       }
-    })
+    });
+
+    this._attackTextGameObject = new Phaser.GameObjects.Text(
+      this._scene,
+      position.x,
+      position.y - 50,
+      '',
+      {
+        fontFamily: 'Arial',
+        fontSize: '15px',
+        color: '#FFA500',
+        fixedWidth: 5000,
+        fixedHeight: 500,
+      }
+    );
+    this._scene.children.add(this._attackTextGameObject);
+    this._attackTextGameObject.alpha = 0;
+    this._attackTextGameObject.setDepth(10);
+  }
+
+  setAttackText(text) {
+    this._attackTextGameObject.setText(text);
+    this._attackTextGameObject.alpha = 1;
+    
+    this._scene.time.delayedCall(2000, () => {
+      this._attackTextGameObject.alpha = 0;
+    });
   }
 
   /** @type {boolean} */
@@ -87,18 +115,36 @@ export class BattleMonster {
     return this._monsterDetails.level;
   }
 
+
+
+  setCurrentHealth(value) {
+    this._currentHealth = value;
+  }
+
+  getCurrentHealth() {
+    return this._currentHealth;
+  }
+
   /**
-   * @param {number} damage
+   * @param {number} baseDamage
    * @param {() => void} [callback]
    */
-  takeDamage(damage, callback) {
-    // update current monster health and animate health bar
-    this._currentHealth -= damage;
-    if (this._currentHealth < 0) {
-      this._currentHealth = 0;
+  takeDamage(baseDamage, callback) {
+    var realDamage = this.calculateRealDamage(baseDamage);
+    this.takeRealDamage(realDamage);
+    if (this.getCurrentHealth() < 0)
+    {
+      this.setCurrentHealth(0);
     }
     this._healthBar.setMeterPercentageAnimated(this._currentHealth / this._maxHealth, { callback });
   }
+  takeRealDamage(realDamage) {
+    throw new Error('Method not implemented.');
+  }
+  calculateRealDamage(baseDamage) {
+    throw new Error('Method not implemented.');
+  }
+
   takeHealth(health, callback) {
     // update current monster health and animate health bar
     this._currentHealth += health;

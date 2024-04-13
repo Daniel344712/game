@@ -7,12 +7,27 @@ const ENEMY_POSITION = Object.freeze({
     y: 144,
 })
 
-export class EnemyBattleMonster extends BattleMonster{
+export class EnemyBattleMonster extends BattleMonster {
     /**
      * 
      * @param {import("../../types/typedef").BattleMonsterConfig} config 
      */
-    constructor(config){
-        super({...config, scaleHealthBarBackgroundImageByY: 0.8},  ENEMY_POSITION)
+    constructor(config) {
+        super({ ...config, scaleHealthBarBackgroundImageByY: 0.8 }, ENEMY_POSITION)
+    }
+
+    takeRealDamage(realDamage) {
+        this.setCurrentHealth(this.getCurrentHealth() - realDamage);
+    }
+
+    calculateRealDamage(damage) {
+        let randomPercentage = Math.random() * (100 - 50) + 50;
+
+
+        let realDamage = Math.floor(damage * (randomPercentage / 100));
+
+        this.setAttackText("Resisted " + Number(damage - realDamage) + " damage");
+
+        return realDamage;
     }
 }
