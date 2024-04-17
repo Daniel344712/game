@@ -4,10 +4,11 @@ import { DIRECTION } from '../../../common/direction.js';
 import { exhaustiveGuard } from '../../../utils/guard.js';
 import { ACTIVE_BATTLE_MENU, ATTACK_MOVE_OPTIONS, BATTLE_MENU_OPTIONS } from '../../battle-menu-options.js';
 import { BATTLE_UI_TEXT_STYLE } from '../../battle-menu-config.js';
-import { BattleMonster } from '../../characters/battle-character.js';
+import { BattleMonster } from '../../../world/characters/battle-character.js';
 import { PlayerInventoryFacade } from '../../../Patrones/Fachada/PlayerInventoryFachada.js';
 import { PlayerItems } from '../../../Patrones/Fachada/PlayerItems.js';
 import { MenuCompositeManager } from '../../../Patrones/Compositor/MenuCompositorManager.js';
+import { BattleScene } from '../../../scenes/battle-scene.js';
 
 
 
@@ -52,6 +53,8 @@ export class BattleMenu {
   #activePlayerMonster
   /**@type {MenuCompositeManager} */
   #menuManager
+  /**@type {BattleScene} */
+  #enemyAttack;
 
   /**
    * 
@@ -479,11 +482,13 @@ export class BattleMenu {
           this.#switchToMainBattleMenu();
         });
       } else if (currentPotions > 0) {
-
+     
         this.#activePlayerMonster.takeHealth(20, () => {
           facade.usePotion();
           this.updateInfoPaneMessagesAndWaitForInput(['You used a potion...'], () => {
+          
             this.#switchToMainBattleMenu();
+         
           });
         });
       } else {

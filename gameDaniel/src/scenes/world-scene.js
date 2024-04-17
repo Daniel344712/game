@@ -127,9 +127,9 @@ export class WorldScene extends Phaser.Scene {
       // Start the floorOne scene when the player is close to the portal
       this.scene.start(SCENE_KEYS.FLOORONE_BACKGROUND);
     }
-    const distanceToTavern = Phaser.Math.Distance.Between(this.#player.sprite.x, this.#player.sprite.y, 832, 1337);
-    if (distanceToTavern < this.#player.sprite.displayWidth / 2 + this.#portal.displayWidth / 2) {
-      this.scene.start(SCENE_KEYS.BATTLE_SCENE);
-    }
+    //const distanceToTavern = Phaser.Math.Distance.Between(this.#player.sprite.x, this.#player.sprite.y, 832, 1337);
+    //if (distanceToTavern < this.#player.sprite.displayWidth / 2 + this.#portal.displayWidth / 2) {
+    //  this.scene.start(SCENE_KEYS.BATTLE_SCENE);
+    //}
   }
 }

@@ -91,8 +91,8 @@ export class FloorScene extends SceneWithPlayer {
 
     // Check if the player is close to the portal
     if (distanceToPortal < this.getPlayer().sprite.displayWidth / 2 + this.#portal.displayWidth / 2) {
-      // Start the new scene
-      this.scene.start(SCENE_KEYS.FLOORTWO_BACKGROUND);
-    }
+      this.#floorName === "uno" ? this.scene.start(SCENE_KEYS.FLOORTWO_BACKGROUND) : this.#floorName === "dos" ? this.scene.start(SCENE_KEYS.MAGIC) :
+        this.#floorName === "tres" ? this.scene.start(SCENE_KEYS.WORLD_SCENE) : null
+    } 
   }
 }

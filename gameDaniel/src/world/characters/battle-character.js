@@ -1,7 +1,8 @@
 import { BATTLE_ASSET_KEYS, DATA_ASSET_KEYS } from '../../assets/asset-keys.js';
 import { MonsterDetails } from '../../Patrones/Builder/MonsterDetails.js';
 import { CharacterFactory } from '../../Patrones/Factory/characterFactory.js';
-import { HealthBar } from '../ui/health-bar.js';
+import { BattleScene } from '../../scenes/battle-scene.js';
+import { HealthBar } from '../../battle/ui/health-bar.js';
 
 export class BattleMonster {
   /** @protected @type {Phaser.Scene} */
@@ -22,7 +23,8 @@ export class BattleMonster {
   _phaserHealthBarGameContainer;
   /** @protected @type {Phaser.GameObjects.Text} */
   _attackTextGameObject;
-
+   /** @type {BattleScene} */
+  #enemyAttack;
   /**
    * @param {import('../../types/typedef.js').BattleMonsterConfig} config
    * @param {import('../../types/typedef.js').Coordinate} position
@@ -125,22 +127,12 @@ export class BattleMonster {
     return this._currentHealth;
   }
 
-  /**
-   * @param {number} baseDamage
-   * @param {() => void} [callback]
-   */
-  takeDamage(baseDamage, callback) {
-    var realDamage = this.calculateRealDamage(baseDamage);
-    this.takeRealDamage(realDamage);
-    if (this.getCurrentHealth() < 0)
-    {
-      this.setCurrentHealth(0);
-    }
-    this._healthBar.setMeterPercentageAnimated(this._currentHealth / this._maxHealth, { callback });
-  }
+
+
   takeRealDamage(realDamage) {
     throw new Error('Method not implemented.');
   }
+
   calculateRealDamage(baseDamage) {
     throw new Error('Method not implemented.');
   }
@@ -149,8 +141,9 @@ export class BattleMonster {
     // update current monster health and animate health bar
     this._currentHealth += health;
     if (this._currentHealth < 0) {
-      this._currentHealth = 0;
+      this._currentHealth = 0;      
     }
+
     this._healthBar.setMeterPercentageAnimated(this._currentHealth / this._maxHealth, { callback });
   }
 

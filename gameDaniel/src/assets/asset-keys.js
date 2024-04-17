@@ -2,6 +2,7 @@ export const BATTLE_BACKGROUND_ASSET_KEYS = Object.freeze({
   FOREST: 'FOREST',
   BATTLE_SCENE_1: 'BATTLE_SCENE_1',
   CAVE: 'CAVE',
+ 
 });
 
 export const MONSTER_ASSET_KEYS = Object.freeze({
@@ -51,6 +52,7 @@ export const WORLD_ASSET_KEYS = Object.freeze({
   SHOP_SCENE: "SHOP_SCENE",
   ICON_SHOP: "ICON_SHOP",
   DOLLAR_SIGN: "DOLLAR_SIGN",
+  MAGIC: "MAGIC",
 
 })
 

@@ -36,6 +36,10 @@ export class PreloadScene extends Phaser.Scene {
       `${monsterTamerAssetPath}/battle-backgrounds/awesomeCavePixelArt.png`
     );
     this.load.image(
+      WORLD_ASSET_KEYS.MAGIC,
+      `${monsterTamerAssetPath}/battle-backgrounds/MAGIC.png`
+    );
+    this.load.image(
       BATTLE_BACKGROUND_ASSET_KEYS.BATTLE_SCENE_1,
       `${monsterTamerAssetPath}/battle-backgrounds/forest-background.png`
     );
@@ -150,7 +154,7 @@ export class PreloadScene extends Phaser.Scene {
   create() {
     console.log(`[${PreloadScene.name}:create] invoked`);
     this.#createAnimations();
-    this.scene.start(SCENE_KEYS.BATTLE_SCENE);
+    this.scene.start(SCENE_KEYS.WORLD_SCENE);
     
   }
 

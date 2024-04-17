@@ -3,17 +3,19 @@ import {
   HEALTH_BAR_ASSET_KEYS,
   MONSTER_ASSET_KEYS,
   UI_ASSET_KEYS,
+  WORLD_ASSET_KEYS,
 } from '../assets/asset-keys.js';
 import { BattleMenu } from '../battle/ui/menu/battle-menu.js';
 import Phaser from '../lib/phaser.js';
 import { SCENE_KEYS } from './scene-keys.js';
 import { DIRECTION } from '../common/direction.js';
 import { BackGround } from '../battle/background.js';
-import { EnemyBattleMonster } from '../battle/characters/enemy-battle-monster.js';
-import { PlayerBattleMonster } from '../battle/characters/player-battle-monster.js';
+import { EnemyBattleMonster } from '../world/characters/enemy-battle-monster.js';
+import { PlayerBattleMonster } from '../world/characters/player-battle-monster.js';
 import { SHOP_SCENE } from './shop-scene.js';
 import { Director } from '../Patrones/Builder/Director.js';
 import { MenuCompositeManager } from '../Patrones/Compositor/MenuCompositorManager.js';
+import { DamageCalculatorContext } from '../Patrones/Estrategy/DamageCalculatorContext.js';
 
 
 
@@ -68,84 +70,96 @@ export class BattleScene extends Phaser.Scene {
 
     var monster = Math.floor(Math.random() * 10) % 4;
 
+    var damageCalculatorContext = new DamageCalculatorContext();
+
     switch (monster) {
       case 0:
-        this.#activeEnemyMonster = new EnemyBattleMonster({
-          scene: this,
-          monsterDetails: new Director().CreateConfiguration(
-            MONSTER_ASSET_KEYS.SKELETON,
-            MONSTER_ASSET_KEYS.SKELETON,
-            0,
-            25,
-            25,
-            [1],
-            5,
-            5
-          )
-        })
+        this.#activeEnemyMonster = new EnemyBattleMonster(
+          damageCalculatorContext.ChooseDamageReductionStrategy(),
+          {
+            scene: this,
+            monsterDetails: new Director().CreateConfiguration(
+              MONSTER_ASSET_KEYS.SKELETON,
+              MONSTER_ASSET_KEYS.SKELETON,
+              0,
+              25,
+              25,
+              [1],
+              5,
+              5
+            )
+          })
         break;
       case 1:
-        this.#activeEnemyMonster = new EnemyBattleMonster({
-          scene: this,
-          monsterDetails: new Director().CreateConfiguration(
-            MONSTER_ASSET_KEYS.GOBLIN,
-            MONSTER_ASSET_KEYS.GOBLIN,
-            0,
-            25,
-            25,
-            [1],
-            5,
-            5,
-          )
-        })
+        this.#activeEnemyMonster = new EnemyBattleMonster(
+          damageCalculatorContext.ChooseDamageReductionStrategy(),
+          {
+            scene: this,
+            monsterDetails: new Director().CreateConfiguration(
+              MONSTER_ASSET_KEYS.GOBLIN,
+              MONSTER_ASSET_KEYS.GOBLIN,
+              0,
+              25,
+              25,
+              [1],
+              5,
+              5,
+            )
+          })
 
         break;
       case 2:
-        this.#activeEnemyMonster = new EnemyBattleMonster({
-          scene: this,
-          monsterDetails: new Director().CreateConfiguration(
-            MONSTER_ASSET_KEYS.DEMON,
-            MONSTER_ASSET_KEYS.DEMON,
-            0,
-            25,
-            25,
-            [1],
-            5,
-            5,
-          )
-        })
+        this.#activeEnemyMonster = new EnemyBattleMonster(
+          damageCalculatorContext.ChooseDamageReductionStrategy(),
+          {
+            scene: this,
+            monsterDetails: new Director().CreateConfiguration(
+              MONSTER_ASSET_KEYS.DEMON,
+              MONSTER_ASSET_KEYS.DEMON,
+              0,
+              25,
+              25,
+              [1],
+              5,
+              5,
+            )
+          })
 
         break;
       case 3:
-        this.#activeEnemyMonster = new EnemyBattleMonster({
-          scene: this,
-          monsterDetails: new Director().CreateConfiguration(
-            MONSTER_ASSET_KEYS.WORM,
-            MONSTER_ASSET_KEYS.WORM,
-            0,
-            25,
-            25,
-            [1],
-            5,
-            5,
-          )
-        })
+        this.#activeEnemyMonster = new EnemyBattleMonster(
+          damageCalculatorContext.ChooseDamageReductionStrategy(),
+          {
+            scene: this,
+            monsterDetails: new Director().CreateConfiguration(
+              MONSTER_ASSET_KEYS.WORM,
+              MONSTER_ASSET_KEYS.WORM,
+              0,
+              25,
+              25,
+              [1],
+              5,
+              5,
+            )
+          })
 
         break;
       case 4:
-        this.#activeEnemyMonster = new EnemyBattleMonster({
-          scene: this,
-          monsterDetails: new Director().CreateConfiguration(
-            MONSTER_ASSET_KEYS.EvilWizard,
-            MONSTER_ASSET_KEYS.EvilWizard,
-            0,
-            25,
-            25,
-            [1],
-            5,
-            5,
-          )
-        })
+        this.#activeEnemyMonster = new EnemyBattleMonster(
+          damageCalculatorContext.ChooseDamageReductionStrategy(),
+          {
+            scene: this,
+            monsterDetails: new Director().CreateConfiguration(
+              MONSTER_ASSET_KEYS.EvilWizard,
+              MONSTER_ASSET_KEYS.EvilWizard,
+              0,
+              25,
+              25,
+              [1],
+              5,
+              5,
+            )
+          })
 
         break;
     }
@@ -248,15 +262,13 @@ export class BattleScene extends Phaser.Scene {
 
             this.scene.stop();
             this.scene.resume(SCENE_KEYS.FLOORONE_BACKGROUND);
+            this.scene.resume(SCENE_KEYS.FLOORTWO_BACKGROUND);
+            this.scene.resume(SCENE_KEYS.MAGIC);
           } else {
             this.#enemyAttack();
           }
 
-          console.log("Error 2", this.#activePlayerAttackIndex);
-          //  if(this.#activePlayerMonster.isFainted){
-          //    console.log("You lose");
-          //    this.scene.start(SCENE_KEYS.FLOORTWO_BACKGROUND);
-          //  }
+
         });
       });
     });
@@ -265,13 +277,17 @@ export class BattleScene extends Phaser.Scene {
 
   #enemyAttack() {
     this.#battleMenu.updateInfoPaneMessagesAndWaitForInput([`for ${this.#activeEnemyMonster.name} used ${this.#activeEnemyMonster.attacks[0].name}`], () => {
-      // if (this.#activeEnemyMonster.isFainted) {
-      //   console.log("You win");
-      //   this.scene.start(SCENE_KEYS.FLOORONE_BACKGROUND);
-      // }
       this.time.delayedCall(500, () => {
         this.#activePlayerMonster.takeDamage(20, () => {
           this.#battleMenu.showMainBattleMenu();
+          if (this.#activePlayerMonster.isFainted) {
+            this.scene.stop(SCENE_KEYS.FLOORONE_BACKGROUND);
+            this.scene.stop(SCENE_KEYS.FLOORTWO_BACKGROUND);
+            this.scene.stop(SCENE_KEYS.MAGIC);
+            this.scene.start(
+              SCENE_KEYS.WORLD_SCENE
+            )    
+          }
         });
       });
     });
