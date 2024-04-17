@@ -3,6 +3,8 @@ import { MonsterDetails } from '../../Patrones/Builder/MonsterDetails.js';
 import { CharacterFactory } from '../../Patrones/Factory/characterFactory.js';
 import { BattleScene } from '../../scenes/battle-scene.js';
 import { HealthBar } from '../../battle/ui/health-bar.js';
+import { AttackText } from './AttackText.js';
+import { Subject } from '../../Patrones/Observador/Subject.js';
 
 export class BattleMonster {
   /** @protected @type {Phaser.Scene} */
@@ -21,10 +23,12 @@ export class BattleMonster {
   _monsterAttacks;
   /** @protected @type {Phaser.GameObjects.Container} */
   _phaserHealthBarGameContainer;
-  /** @protected @type {Phaser.GameObjects.Text} */
-  _attackTextGameObject;
+  /** @protected @type {Subject} */
+  _attackSubject;
    /** @type {BattleScene} */
   #enemyAttack;
+
+
   /**
    * @param {import('../../types/typedef.js').BattleMonsterConfig} config
    * @param {import('../../types/typedef.js').Coordinate} position
@@ -50,31 +54,25 @@ export class BattleMonster {
       }
     });
 
-    this._attackTextGameObject = new Phaser.GameObjects.Text(
-      this._scene,
-      position.x,
-      position.y - 50,
-      '',
+    var attackTextGameObject = new AttackText(
+      this._scene, 
+      position,
       {
         fontFamily: 'Arial',
         fontSize: '15px',
         color: '#FFA500',
         fixedWidth: 5000,
         fixedHeight: 500,
-      }
-    );
-    this._scene.children.add(this._attackTextGameObject);
-    this._attackTextGameObject.alpha = 0;
-    this._attackTextGameObject.setDepth(10);
+      });
+
+    this._attackSubject = new Subject();
+    this._attackSubject.addObserver(attackTextGameObject);
+    
+    this._scene.children.add(attackTextGameObject.getAttackTextGameObject());
   }
 
   setAttackText(text) {
-    this._attackTextGameObject.setText(text);
-    this._attackTextGameObject.alpha = 1;
-    
-    this._scene.time.delayedCall(2000, () => {
-      this._attackTextGameObject.alpha = 0;
-    });
+    this._attackSubject.setSubjectState(text);
   }
 
   /** @type {boolean} */

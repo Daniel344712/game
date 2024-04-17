@@ -99,8 +99,8 @@ export class BattleScene extends Phaser.Scene {
               MONSTER_ASSET_KEYS.GOBLIN,
               MONSTER_ASSET_KEYS.GOBLIN,
               0,
-              25,
-              25,
+              50,
+              50,
               [1],
               5,
               5,
@@ -135,8 +135,8 @@ export class BattleScene extends Phaser.Scene {
               MONSTER_ASSET_KEYS.WORM,
               MONSTER_ASSET_KEYS.WORM,
               0,
-              25,
-              25,
+              50,
+              50,
               [1],
               5,
               5,
@@ -165,6 +165,7 @@ export class BattleScene extends Phaser.Scene {
     }
 
     this.#activePlayerMonster = new PlayerBattleMonster(
+      
       {
         scene: this,
         monsterDetails: new Director().CreateConfiguration(
